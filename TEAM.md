@@ -1,5 +1,5 @@
 ## Equipe
-Ludivine THINET
-Baptiste SALAZAR
-Robin ZAFRANI
-Jawad LAMHAOURKI
+# Ludivine THINET 
+# Baptiste SALAZAR 
+# Robin ZAFRANI 
+# Jawad LAMHAOURKI 
