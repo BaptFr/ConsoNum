@@ -1,0 +1,6 @@
+{
+    "require": {
+        "doctrine/mongodb-odm-bundle": "^5.4",
+        "doctrine/mongodb-odm": "^2.14"
+    }
+}
