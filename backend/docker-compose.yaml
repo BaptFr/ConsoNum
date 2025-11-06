@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  # Conteneur MariaDB
+  db:
+    image: mariadb:12
+    container_name: consonum_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: mariadb      # mot de passe root pour administration
+      MYSQL_DATABASE: consonum_db            # base créée automatiquement
+      MYSQL_USER: consonum                    # utilisateur pour Symfony
+      MYSQL_PASSWORD: mariadb             # mot de passe de l'utilisateur
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  # Conteneur PHP/Symfony
+  php:
+    image: php:8.2-fpm
+    container_name: consonum_php
+    working_dir: /var/www/html
+    volumes:
+      - ./backend:/var/www/html
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: "mysql://consonum:motdepasse@db:3306/consonum_db?serverVersion=12.0"
+
+  # Conteneur pour exposer le front (optionnel si tu veux utiliser PHP built-in server)
+  web:
+    image: nginx:alpine
+    container_name: consonum_web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./backend:/var/www/html
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - php
+
+volumes:
+  db_data:
