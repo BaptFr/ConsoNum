@@ -7,44 +7,26 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
-/vendor
 
 # testing
 /coverage
 
-# Next.js / front-end
+# next.js
 /.next/
 /out/
-/dist/
-/build/
 
-# Symfony / PHP
-/backend/vendor/
-/backend/var/
-/backend/.env.local
-/backend/.env.*.local
-/backend/.env
-/backend/.env.dev
-/backend/config/secrets/prod/prod.decrypt.private.php
-/backend/config/secrets/dev/
+# production
+/build
 
-# Docker
-/backend/docker-compose.override.yaml
-/backend/data/
-
-# IDEs
-/.idea/
-/.vscode/
-
-# OS / misc
+# misc
 .DS_Store
-Thumbs.db
-*.log
 *.pem
 
-# Debug logs
+# debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
- /backend/config
+
+# env files (can opt-in for committing if needed)
+.env*
