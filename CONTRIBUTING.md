@@ -2,13 +2,14 @@
 
 ## Objectif
 
-Ce guide définit les règles à suivre pour collaborer efficacement sur ce projet Git, en environnement Windows, avec Git Bash ou PowerShell.
+Ce guide définit les conventions à suivre pour collaborer efficacement sur ce projet, en environnement Windows, avec Git Bash ou PowerShell.
 
 ## Règles de base
 
 - Ne jamais travailler directement sur la branche `main`.
 - Toute contribution doit passer par une branche dédiée et une Pull Request (PR).
-- Une PR ne doit contenir qu’un seul objectif (fonctionnalité, correction, etc.).
+- Une PR ne doit contenir qu’un seul objectif global (fonctionnalité, correction, etc.).
+- Tout en anglais.
 
 ## Création d’une branche
 
@@ -35,7 +36,7 @@ Types de branche autorisés :
 - `Docs` : documentation
 - `Refactor` : amélioration technique de code, de dossiers etc... sans modification fonctionnelle
 
-Exemples :
+Exemples concret de nommage de branche :
 - `Feat/authentification-feature-add`
 - `Fix/responsive error`
 - `Docs/update-readme`
@@ -56,7 +57,7 @@ Types de commit valides :
 - `Refactor` : refactorisation
 
 
-Exemples de commit:
+Exemples concrets de commit:
 
 - `Feat: add contact form`
 - `Fix: Navigation fix`
@@ -101,7 +102,6 @@ git pull origin main
 ## Liens utiles
 
 - `README.md` — Présentation du projet
-- `issues/` — Suivi des tâches et bugs
 
 
 ## Workflow
