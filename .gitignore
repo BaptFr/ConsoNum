@@ -20,5 +20,19 @@ Thumbs.db
 /backend/*.log
 /backend/*.pem
 /backend/*.cache
- /vendor/
- /vendor/*
+vendor/
+vendor/*
+/vendor/*
+
+#Docker
+docker-compose.yaml
+docker-compose.yml
+docker-compose.override.yml
+docker-compose.override.env
+
+/docker-compose.override.yml
+/docker-compose.override.env
+
+.env
+.env.dev
+.log
