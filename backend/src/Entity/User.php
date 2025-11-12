@@ -15,17 +15,17 @@ class User
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: "string", length: 180, unique: true)]
     private ?string $email = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: "string")]
     private ?string $password = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $score = null;
+    #[ORM\Column(type: "integer", nullable: true)]
+    private ?int $score = null;
 
-    #[ORM\Column]
-    private ?\DateTime $createdAt = null;
+    #[ORM\Column(type: "datetime", options: ["default" => "CURRENT_TIMESTAMP"])]
+    private ?\DateTimeInterface $createdAt = null;
 
     /**
      * @var Collection<int, Resultat>
@@ -67,24 +67,24 @@ class User
         return $this;
     }
 
-    public function getScore(): ?string
+    public function getScore(): ?int
     {
         return $this->score;
     }
 
-    public function setScore(string $score): static
+    public function setScore(string $score): self
     {
         $this->score = $score;
 
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTime
+    public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTime $createdAt): static
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
 
