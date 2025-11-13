@@ -30,6 +30,10 @@ class Resultat
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    #[ORM\ManyToOne(targetEntity: Question::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Question $question = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -94,4 +98,7 @@ class Resultat
 
         return $this;
     }
+
+    public function getQuestion(): ?Question { return $this->question; }
+    public function setQuestion(Question $question): self { $this->question = $question; return $this; }
 }
