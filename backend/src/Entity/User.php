@@ -72,7 +72,7 @@ class User
         return $this->score;
     }
 
-    public function setScore(string $score): self
+    public function setScore(int $score): self
     {
         $this->score = $score;
 

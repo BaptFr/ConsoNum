@@ -23,9 +23,6 @@ class Resultat
     #[ORM\Column(nullable: true)]
     private ?array $details = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $addAnotherProperty = null;
-
     #[ORM\ManyToOne(inversedBy: 'resultats')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
@@ -75,17 +72,6 @@ class Resultat
         return $this;
     }
 
-    public function getAddAnotherProperty(): ?string
-    {
-        return $this->addAnotherProperty;
-    }
-
-    public function setAddAnotherProperty(?string $addAnotherProperty): static
-    {
-        $this->addAnotherProperty = $addAnotherProperty;
-
-        return $this;
-    }
 
     public function getUser(): ?User
     {
