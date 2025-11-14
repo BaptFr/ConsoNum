@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/api/users', name: 'api_users_')]
 class UserController extends AbstractController
 {
-    #[Route('', name: 'create', methods: ['POST'])]
+    #[Route('/register', name: 'register', methods: ['POST'])]
     public function create(Request $request, EntityManagerInterface $em): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
