@@ -53,8 +53,8 @@ final class ResultatController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        $user = $this->em->getRepository(User::class)->find($data['user'] ?? 0);
-        $question = $this->em->getRepository(Question::class)->find($data['question'] ?? 0);
+        $user = $this->em->getRepository(User::class)->find($data['user_id'] ?? 0);
+        $question = $this->em->getRepository(Question::class)->find($data['question_id'] ?? 0);
 
         if (!$user || !$question) {
             return $this->json(['error' => 'User or Question not found'], 404);
@@ -65,6 +65,8 @@ final class ResultatController extends AbstractController
         $resultat->setUser($user);
         $resultat->setQuestion($question);
 
+        $resultat->setDate(new \DateTimeImmutable());
+        
         $this->em->persist($resultat);
         $this->em->flush();
 
