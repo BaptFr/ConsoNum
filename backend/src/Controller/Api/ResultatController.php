@@ -1,0 +1,109 @@
+<?php
+
+namespace App\Controller\Api;
+
+use App\Entity\Resultat;
+use App\Entity\User;
+use App\Entity\Question;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Annotation\Route;
+
+#[Route('/api/resultat', name: 'api_resultat_')]
+final class ResultatController extends AbstractController
+{
+    public function __construct(private EntityManagerInterface $em) {}
+
+    // GET /api/resultat -> liste tous les résultats
+    #[Route('', name: 'list', methods: ['GET'])]
+    public function list(): JsonResponse
+    {
+        $resultats = $this->em->getRepository(Resultat::class)->findAll();
+        $data = [];
+
+        foreach ($resultats as $r) {
+            $data[] = [
+                'id' => $r->getId(),
+                'score' => $r->getScore(),
+                'user' => $r->getUser()->getId(),
+                'question' => $r->getQuestion()->getId(),
+            ];
+        }
+
+        return $this->json($data);
+    }
+
+    // GET /api/resultat/{id} -> un résultat précis
+    #[Route('/{id}', name: 'get', methods: ['GET'])]
+    public function get(Resultat $resultat): JsonResponse
+    {
+        return $this->json([
+            'id' => $resultat->getId(),
+            'score' => $resultat->getScore(),
+            'user' => $resultat->getUser()->getId(),
+            'question' => $resultat->getQuestion()->getId(),
+        ]);
+    }
+
+    // POST /api/resultat -> créer un résultat
+    #[Route('', name: 'create', methods: ['POST'])]
+    public function create(Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $user = $this->em->getRepository(User::class)->find($data['user_id'] ?? 0);
+        $question = $this->em->getRepository(Question::class)->find($data['question_id'] ?? 0);
+
+        if (!$user || !$question) {
+            return $this->json(['error' => 'User or Question not found'], 404);
+        }
+
+        $resultat = new Resultat();
+        $resultat->setScore($data['score'] ?? 0);
+        $resultat->setUser($user);
+        $resultat->setQuestion($question);
+
+        $resultat->setDate(new \DateTimeImmutable());
+        
+        $this->em->persist($resultat);
+        $this->em->flush();
+
+        return $this->json([
+            'message' => 'Resultat created',
+            'id' => $resultat->getId(),
+        ], 201);
+    }
+
+    // PUT /api/resultat/{id} -> mettre à jour un résultat
+    #[Route('/{id}', name: 'update', methods: ['PUT'])]
+    public function update(Request $request, Resultat $resultat): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        if (isset($data['score'])) {
+            $resultat->setScore($data['score']);
+        }
+
+        $this->em->flush();
+
+        return $this->json([
+            'message' => 'Resultat updated',
+            'id' => $resultat->getId(),
+        ]);
+    }
+
+    // DELETE /api/resultat/{id} -> supprimer un résultat
+    #[Route('/{id}', name: 'delete', methods: ['DELETE'])]
+    public function delete(Resultat $resultat): JsonResponse
+    {
+        $this->em->remove($resultat);
+        $this->em->flush();
+
+        return $this->json([
+            'message' => 'Resultat deleted',
+            'id' => $resultat->getId(),
+        ]);
+    }
+}

@@ -113,18 +113,6 @@ class Reponse
     }
 
 
-    public function getDate(): ?\DateTimeImmutable
-    {
-        return $this->date;
-    }
-
-    public function setDate(\DateTimeImmutable $date): static
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
     public function getDetails(): ?array
     {
         return $this->details;
