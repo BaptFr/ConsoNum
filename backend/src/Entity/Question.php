@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: QuestionRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Question
 {
     #[ORM\Id]
@@ -30,9 +31,10 @@ class Question
 
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
-
+    
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $addAnotherProperty = null;
+
 
     /**
      * @var Collection<int, Reponse>
@@ -45,16 +47,22 @@ class Question
         $this->reponses = new ArrayCollection();
     }
 
+        #[ORM\PrePersist]
+    public function onPrePersist(): void
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    #[ORM\PreUpdate]
+    public function onPreUpdate(): void
+    {
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function setId(int $id): static
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     public function getTexte(): ?string
@@ -117,17 +125,6 @@ class Question
         return $this;
     }
 
-    public function getAddAnotherProperty(): ?string
-    {
-        return $this->addAnotherProperty;
-    }
-
-    public function setAddAnotherProperty(?string $addAnotherProperty): static
-    {
-        $this->addAnotherProperty = $addAnotherProperty;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Reponse>

@@ -3,7 +3,7 @@ version: "3.8"
 services:
   # Conteneur MariaDB
   db:
-    image: mariadb:12
+    image: mariadb:10.11
     container_name: consonum_db
     restart: always
     environment:
@@ -22,11 +22,11 @@ services:
     container_name: consonum_php
     working_dir: /var/www/html
     volumes:
-      - ./backend:/var/www/html
+      - .:/var/www/html
     depends_on:
       - db
     environment:
-      DATABASE_URL: "mysql://consonum:mariadb@db:3306/consonum_db?serverVersion=12.0"
+      DATABASE_URL: "mysql://consonum:mariadb@db:3306/consonum_db?serverVersion=mariadb-10.11.6"
 
   # Conteneur pour exposer le front (optionnel si tu veux utiliser PHP built-in server)
   web:
@@ -35,7 +35,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./backend:/var/www/html
+      - .:/var/www/html
       - ./docker/nginx/conf.d:/etc/nginx/conf.d
     depends_on:
       - php

@@ -23,12 +23,13 @@ class Resultat
     #[ORM\Column(nullable: true)]
     private ?array $details = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $addAnotherProperty = null;
-
     #[ORM\ManyToOne(inversedBy: 'resultats')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+
+    #[ORM\ManyToOne(targetEntity: Question::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Question $question = null;
 
     public function getId(): ?int
     {
@@ -71,17 +72,6 @@ class Resultat
         return $this;
     }
 
-    public function getAddAnotherProperty(): ?string
-    {
-        return $this->addAnotherProperty;
-    }
-
-    public function setAddAnotherProperty(?string $addAnotherProperty): static
-    {
-        $this->addAnotherProperty = $addAnotherProperty;
-
-        return $this;
-    }
 
     public function getUser(): ?User
     {
@@ -94,4 +84,7 @@ class Resultat
 
         return $this;
     }
+
+    public function getQuestion(): ?Question { return $this->question; }
+    public function setQuestion(Question $question): self { $this->question = $question; return $this; }
 }
