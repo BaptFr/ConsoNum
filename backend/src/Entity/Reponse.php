@@ -12,12 +12,15 @@ class Reponse
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['question:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['question:read'])]
     private ?string $texte = null;
 
     #[ORM\Column]
+    #[Groups(['question:read'])]
     private ?float $valeur = null;
 
     #[ORM\Column]
