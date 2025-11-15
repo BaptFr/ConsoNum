@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\QuestionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,15 +16,19 @@ class Question
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['question:read'])] 
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['question:read'])]
     private ?string $texte = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['question:read'])]
     private ?string $categorie = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['question:read'])]
     private ?string $type = null;
 
     #[ORM\Column]
@@ -40,6 +45,7 @@ class Question
      * @var Collection<int, Reponse>
      */
     #[ORM\OneToMany(targetEntity: Reponse::class, mappedBy: 'question')]
+     #[Groups(['question:read'])]
     private Collection $reponses;
 
     public function __construct()

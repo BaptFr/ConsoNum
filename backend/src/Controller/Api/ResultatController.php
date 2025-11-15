@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 #[Route('/api/resultat', name: 'api_resultat_')]
 final class ResultatController extends AbstractController
@@ -49,15 +50,17 @@ final class ResultatController extends AbstractController
 
     // POST /api/resultat -> créer un résultat
     #[Route('', name: 'create', methods: ['POST'])]
-    public function create(Request $request): JsonResponse
+    public function create(Request $request, #[CurrentUser] ?User $user): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
+        if (!$user) {
+        return $this->json(['error' => 'Authentication required'], 401);
+        }
 
-        $user = $this->em->getRepository(User::class)->find($data['user_id'] ?? 0);
+        $data = json_decode($request->getContent(), true);
         $question = $this->em->getRepository(Question::class)->find($data['question_id'] ?? 0);
 
-        if (!$user || !$question) {
-            return $this->json(['error' => 'User or Question not found'], 404);
+        if (!$question) {
+            return $this->json(['error' => 'Question not found'], 404);
         }
 
         $resultat = new Resultat();
@@ -76,11 +79,19 @@ final class ResultatController extends AbstractController
         ], 201);
     }
 
-    // PUT /api/resultat/{id} -> mettre à jour un résultat
+    // PUT /api/resultat/{id} -> MAJ un résultat
     #[Route('/{id}', name: 'update', methods: ['PUT'])]
-    public function update(Request $request, Resultat $resultat): JsonResponse
+    public function update(Request $request, Resultat $resultat, #[CurrentUser] ?User $user): JsonResponse
     {
+        //Securité
+        if (!$user) {
+            return $this->json(['error' => 'Authentication required'], 401);
+        }
+        if ($resultat->getUser() !== $user) {
+            return $this->json(['error' => 'Unauthorized access'], 403); 
+        }
         $data = json_decode($request->getContent(), true);
+
 
         if (isset($data['score'])) {
             $resultat->setScore($data['score']);
@@ -96,8 +107,14 @@ final class ResultatController extends AbstractController
 
     // DELETE /api/resultat/{id} -> supprimer un résultat
     #[Route('/{id}', name: 'delete', methods: ['DELETE'])]
-    public function delete(Resultat $resultat): JsonResponse
+    public function delete(Resultat $resultat, #[CurrentUser] ?User $user): JsonResponse
     {
+            if(!$user){
+                return $this->json(['error' => 'Authentication required'], 401);
+            }
+            if ($resultat->getUser() !== $user) {
+                return $this->json(['error' => 'Unauthorized access'], 403);
+            }
         $this->em->remove($resultat);
         $this->em->flush();
 
