@@ -19,26 +19,20 @@ final class QuestionController extends AbstractController
     public function list(): JsonResponse
     {
         $questions = $this->em->getRepository(Question::class)->findAll();
-        $data = [];
-
-        foreach ($questions as $q) {
-            $data[] = [
-                'id' => $q->getId(),
-                'intitule' => $q->getIntitule(),
-            ];
-        }
-
-        return $this->json($data);
+    
+        return $this->json(
+            $questions, 
+            200,         
+            [],          
+            ['groups' => 'question:read']
+        );
     }
 
     // GET /api/question/{id} - une question précise
     #[Route('/{id}', name: 'get', methods: ['GET'])]
     public function get(Question $question): JsonResponse
     {
-        return $this->json([
-            'id' => $question->getId(),
-            'intitule' => $question->getIntitule(),
-        ]);
+        return $this->json($question, 200, [], ['groups' => 'question:read']);
     }
 
     // POST /api/question - Céer une question

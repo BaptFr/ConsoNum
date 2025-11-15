@@ -28,7 +28,7 @@ class Resultat
     private ?User $user = null;
 
     #[ORM\ManyToOne(targetEntity: Question::class)]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Question $question = null;
 
     public function getId(): ?int
