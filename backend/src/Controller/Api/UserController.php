@@ -9,11 +9,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 #[Route('/api/users', name: 'api_users_')]
 class UserController extends AbstractController
 {
-    #[Route('', name: 'create', methods: ['POST'])]
+    #[Route('/register', name: 'register', methods: ['POST'])]
     public function create(Request $request, EntityManagerInterface $em): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -37,5 +38,22 @@ class UserController extends AbstractController
             'id' => $user->getId(),
             'email' => $user->getEmail(),
         ], Response::HTTP_CREATED);
+    }
+    #[Route('/me', name: 'me', methods: ['GET'])]
+    public function me(#[CurrentUser] ?User $user): JsonResponse
+        {
+        if (!$user) {
+            return $this->json(['error' => 'User not found'], 401);
+        }
+        
+        $userData = [
+            'id' => $user->getId(),
+            'email' => $user->getEmail(),
+            'score' => $user->getScore(),
+            // fdate formatée pour JSON
+            'createdAt' => $user->getCreatedAt() ? $user->getCreatedAt()->format('Y-m-d H:i:s') : null,
+        ];
+
+        return $this->json($userData);
     }
 }
