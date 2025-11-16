@@ -10,23 +10,48 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+
 
 #[Route('/api/users', name: 'api_users_')]
 class UserController extends AbstractController
 {
     #[Route('/register', name: 'register', methods: ['POST'])]
-    public function create(Request $request, EntityManagerInterface $em): JsonResponse
+    public function create(
+        Request $request, 
+        EntityManagerInterface $em,
+        UserPasswordHasherInteface $passwordHasher,
+        ValidatorInterface $validator
+        ): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
-        if (empty($data['email']) || empty($data['password'])) {
-            return new JsonResponse(['error' => 'Email et mot de passe requis'], Response::HTTP_BAD_REQUEST);
+        if (empty($data['password']) || strlen($data['password']) < 6) {
+            return new JsonResponse(
+                ['error' =>  'Email et mot de passe requis'], 
+                Response::HTTP_BAD_REQUEST
+            );
         }
 
         $user = new User();
-        $user->setEmail($data['email']);
+        $user->setEmail($data['email'] ?? '');
+        $errors = $validator->validate($user);
+        if (count($errors) > 0) {
+            $errorMessages = [];
+            foreach ($errors as $error) {
+                // erreur pour le frontend
+                $errorMessages[] = [
+                    'field' => $error->getPropertyPath(),
+                    'message' => $error->getMessage(),
+                ];
+            }
+            return new JsonResponse(['errors' => $errorMessages], Response::HTTP_BAD_REQUEST);
+        }
+
         // Hash du mot de passe
-        $user->setPassword(password_hash($data['password'], PASSWORD_BCRYPT));
+        $hashedPassword = $passwordHasher->hashPassword($user, $data['password']);
+        $user->setPassword($hashedPassword);
         $user->setScore(0);
         $user->setCreatedAt(new \DateTime());
 
@@ -35,20 +60,25 @@ class UserController extends AbstractController
 
         return new JsonResponse([
             'status' => 'User created',
-            'id' => $user->getId(),
-            'email' => $user->getEmail(),
+            'user' => [
+                'id' => $user->getId(),
+                'email' => $user->getEmail(),
+            ]
         ], Response::HTTP_CREATED);
     }
+
+
     #[Route('/me', name: 'me', methods: ['GET'])]
     public function me(#[CurrentUser] ?User $user): JsonResponse
         {
         if (!$user) {
-            return $this->json(['error' => 'User not found'], 401);
+            return $this->json(['error' => 'User not found'], Response::HTTP_UNAUTHORIZED);
         }
         
         $userData = [
             'id' => $user->getId(),
             'email' => $user->getEmail(),
+            'roles' => $user->getRoles(),
             'score' => $user->getScore(),
             // fdate formatée pour JSON
             'createdAt' => $user->getCreatedAt() ? $user->getCreatedAt()->format('Y-m-d H:i:s') : null,

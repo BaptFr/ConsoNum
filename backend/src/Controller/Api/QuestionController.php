@@ -39,6 +39,9 @@ final class QuestionController extends AbstractController
     #[Route('', name: 'create', methods: ['POST'])]
     public function create(Request $request): JsonResponse
     {
+        // ajout couche role
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $data = json_decode($request->getContent(), true);
 
         $question = new Question();
@@ -65,6 +68,8 @@ final class QuestionController extends AbstractController
     #[Route('/{id}', name: 'update', methods: ['PUT'])]
     public function update(Request $request, Question $question): JsonResponse
     {
+        //couche role
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $data = json_decode($request->getContent(), true);
 
         if (isset($data['intitule'])) {
@@ -83,6 +88,9 @@ final class QuestionController extends AbstractController
     #[Route('/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(Question $question): JsonResponse
     {
+        // couche rôle
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $this->em->remove($question);
         $this->em->flush();
 
