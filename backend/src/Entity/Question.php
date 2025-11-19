@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\QuestionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -21,6 +22,8 @@ class Question
 
     #[ORM\Column(type: Types::TEXT)]
     #[Groups(['question:read'])]
+    #[Assert\NotBlank(message: "Le texte de la question est obligatoire.")]
+    #[Assert\Length(min: 5, minMessage: "La question doit faire au moins 5 caractères.")]
     private ?string $texte = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -29,6 +32,7 @@ class Question
 
     #[ORM\Column(length: 50)]
     #[Groups(['question:read'])]
+    #[Assert\NotBlank(message: "Le type de question est requis.")]
     private ?string $type = null;
 
     #[ORM\Column]
