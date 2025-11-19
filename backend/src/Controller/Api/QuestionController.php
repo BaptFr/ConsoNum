@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[Route('/api/question', name: 'api_question_')]
 final class QuestionController extends AbstractController
@@ -37,7 +38,7 @@ final class QuestionController extends AbstractController
 
     // POST /api/question - Céer une question
     #[Route('', name: 'create', methods: ['POST'])]
-    public function create(Request $request): JsonResponse
+    public function create(Request $request, ValidatorInterface $validator): JsonResponse
     {
         // ajout couche role
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -45,15 +46,26 @@ final class QuestionController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         $question = new Question();
-        $question->setTexte($data['intitule'] ?? 'Nouvelle question');
+        
+          $valeurTexte = $data['texte'] ?? $data['intitule'] ?? null;
+        $question->setTexte($valeurTexte); // Attention : si null, il faut que ton setter accepte null ou gérer l'erreur avant
 
+        // Si ton setter setTexte n'accepte pas null, mets une string vide '' pour déclencher l'erreur Assert\NotBlank
+        if ($valeurTexte === null) {
+             $question->setTexte('');
+        }
 
-        $question->setTexte($data['texte'] ?? 'Nouvelle question');
         $question->setType($data['type'] ?? 'simple'); 
 
         $now = new \DateTimeImmutable();
         $question->setCreatedAt($now);
         $question->setUpdatedAt($now);
+
+        $errors = $validator->validate($question);
+
+        if (count($errors) > 0) {
+            return $this->json($errors, 400);
+        }
         
         $this->em->persist($question);
         $this->em->flush();
@@ -66,7 +78,7 @@ final class QuestionController extends AbstractController
 
     // PUT /api/question/{id} - màj une question
     #[Route('/{id}', name: 'update', methods: ['PUT'])]
-    public function update(Request $request, Question $question): JsonResponse
+    public function update(Request $request, Question $question, ValidatorInterface $validator): JsonResponse
     {
         //couche role
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -74,6 +86,14 @@ final class QuestionController extends AbstractController
 
         if (isset($data['intitule'])) {
             $question->setTexte($data['intitule']);
+        }
+        if (isset($data['texte'])) {
+            $question->setTexte($data['texte']);
+        }
+        
+        $errors = $validator->validate($question);
+        if (count($errors) > 0) {
+            return $this->json($errors, 400);
         }
 
         $this->em->flush();
