@@ -5,50 +5,56 @@ namespace App\Controller\Api;
 use App\Entity\Resultat;
 use App\Entity\User;
 use App\Entity\Question;
+use App\Repository\ResultatRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Bundle\SecurityBundle\Security;
 
 #[Route('/api/resultat', name: 'api_resultat_')]
 final class ResultatController extends AbstractController
 {
     public function __construct(private EntityManagerInterface $em) {}
 
+    // Récpère les bons résultats: priority 10 pour Symfony ne confonde pas "me" et un id}"
+    #[Route('/me', name: 'me', methods: ['GET'], priority: 10)]
+    public function getMyResults(Security $security, ResultatRepository $resultatRepository): JsonResponse
+    {
+        $user = $security->getUser();
+
+        if (!$user) {
+            return $this->json(['error' => 'Authentication required'], 401);
+        }
+
+        $resultats = $resultatRepository->findBy(
+            ['user' => $user],
+            ['date' => 'DESC'] 
+        );
+
+        return $this->json($resultats, 200, [], ['groups' => 'resultat:read']);
+    }
+
     // GET /api/resultat -> liste tous les résultats
     #[Route('', name: 'list', methods: ['GET'])]
     public function list(): JsonResponse
     {
         $resultats = $this->em->getRepository(Resultat::class)->findAll();
-        $data = [];
-
-        foreach ($resultats as $r) {
-            $data[] = [
-                'id' => $r->getId(),
-                'score' => $r->getScore(),
-                'user' => $r->getUser()->getId(),
-                'question' => $r->getQuestion()->getId(),
-            ];
-        }
-
-        return $this->json($data);
+        return $this->json($resultats, 200, [], ['groups' => 'resultat:read']);
     }
 
     // GET /api/resultat/{id} -> un résultat précis
     #[Route('/{id}', name: 'get', methods: ['GET'])]
     public function get(Resultat $resultat): JsonResponse
     {
-        return $this->json([
-            'id' => $resultat->getId(),
-            'score' => $resultat->getScore(),
-            'user' => $resultat->getUser()->getId(),
-            'question' => $resultat->getQuestion()->getId(),
-        ]);
+        return $this->json($resultat, 200, [], ['groups' => 'resultat:read']);
+
     }
 
     // POST /api/resultat -> créer un résultat
+    // Pas d question obligatoire pour résultats ??
     #[Route('', name: 'create', methods: ['POST'])]
     public function create(Request $request, #[CurrentUser] ?User $user): JsonResponse
     {
@@ -57,6 +63,7 @@ final class ResultatController extends AbstractController
         }
 
         $data = json_decode($request->getContent(), true);
+        $questionId = $data['question_id'] ?? 0;
         $question = $this->em->getRepository(Question::class)->find($data['question_id'] ?? 0);
 
         if (!$question) {
@@ -66,9 +73,13 @@ final class ResultatController extends AbstractController
         $resultat = new Resultat();
         $resultat->setScore($data['score'] ?? 0);
         $resultat->setUser($user);
-        $resultat->setQuestion($question);
-
-        $resultat->setDate(new \DateTimeImmutable());
+        if ($question) {
+            $resultat->setQuestion($question);
+        }
+        
+        if (isset($data['details'])) {
+            $resultat->setDetails($data['details']);
+        }
         
         $this->em->persist($resultat);
         $this->em->flush();
@@ -95,6 +106,10 @@ final class ResultatController extends AbstractController
 
         if (isset($data['score'])) {
             $resultat->setScore($data['score']);
+        }
+        
+        if (isset($data['details'])) {
+            $resultat->setDetails($data['details']);
         }
 
         $this->em->flush();
