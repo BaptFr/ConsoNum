@@ -3,10 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\ReponseRepository;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups; 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ReponseRepository::class)]
+#[ORM\HasLifeCycleCallbacks]
 class Reponse
 {
     #[ORM\Id]
@@ -17,10 +20,12 @@ class Reponse
 
     #[ORM\Column(type: Types::TEXT)]
     #[Groups(['question:read'])]
+    #[Assert\NotBlank(message: "Le texte de la réponse est obligatoire.")]
     private ?string $texte = null;
 
     #[ORM\Column]
     #[Groups(['question:read'])]
+    #[Assert\NotNull(message: "La valeur (score) est obligatoire.")]
     private ?float $valeur = null;
 
     #[ORM\Column]
@@ -33,10 +38,24 @@ class Reponse
     private ?string $addAnotherProperty = null;
 
     #[ORM\ManyToOne(inversedBy: 'reponses')]
+     #[ORM\JoinColumn(nullable: false)]
     private ?Question $question = null;
 
     #[ORM\Column(nullable: true)]
     private ?array $details = null;
+
+     #[ORM\PrePersist]
+    public function onPrePersist(): void
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
+     #[ORM\PreUpdate]
+    public function onPreUpdate(): void
+    {
+        $this->updatedAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {

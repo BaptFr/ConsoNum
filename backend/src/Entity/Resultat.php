@@ -5,32 +5,48 @@ namespace App\Entity;
 use App\Repository\ResultatRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ResultatRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Resultat
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['resultat:read'])]
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(['resultat:read'])]
     private ?float $score = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['resultat:read'])]
     private ?\DateTimeImmutable $date = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?array $details = null;
 
     #[ORM\ManyToOne(inversedBy: 'resultats')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['resultat:read'])]
     private ?User $user = null;
 
     #[ORM\ManyToOne(targetEntity: Question::class)]
     #[ORM\JoinColumn(nullable: true)]
+    #[Groups(['resultat:read'])]
     private ?Question $question = null;
 
+    #[ORM\Column(nullable: true)]
+    #[Groups(['resultat:read'])]
+    private ?array $details = null;
+
+    #[ORM\PrePersist]
+    public function onPrePersist(): void
+    {
+        if (!$this->date) {
+            $this->date = new \DateTime();
+        }
+    }
+    
     public function getId(): ?int
     {
         return $this->id;
