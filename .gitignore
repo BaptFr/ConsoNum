@@ -1,3 +1,9 @@
+
+.env
+.env.dev
+.log
+
+
 ### Symfony backend ###
 /backend/vendor/
 /backend/var/
@@ -35,6 +41,23 @@ docker-compose.override.env
 /docker-compose.override.yml
 /docker-compose.override.env
 
-.env
-.env.dev
-.log
+
+### FRONTEND (Next.js) ###
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/coverage/
+frontend/.vercel/
+frontend/.pnp*
+frontend/.env*
+
+# Logs & Debug
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/.pnpm-debug.log*
+
+# TypeScript
+frontend/*.tsbuildinfo
+frontend/next-env.d.ts
