@@ -82,8 +82,9 @@ L'API est le cœur logique de l'application.
 ### 🎨 Frontend (Interface)
 L'interface utilisateur est construite pour être réactive et performante.
 *   **Librairie** : **ReactJS 19** (React).
-*   **Langage** : **Javascript**.
-*   **Styling** : CSS / Sass (modulaire).
+*   **Framework** : **Next.js 14**.
+*   **Langage** : **Typescript**.
+*   **Styling** : TailwindCSS + @heroui/react.
 *   **Communication** : Fetch API / Axios pour consommer l'API Symfony.
 
 ### 💾 Base de Données & Outils
