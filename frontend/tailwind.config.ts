@@ -25,16 +25,16 @@ const config: Config = {
               foreground: "#FFFFFF",
             },
             background: "#FFFFFF",
-            foreground: "#11181C",
+            foreground: "#FFFFFF",
           },
         },
         dark: {
           colors: {
             primary: {
               DEFAULT: "#22c55e",
-              foreground: "#000000",
+              foreground: "#FFFFFF",
             },
-              background: "#000000",
+              background: "#072C27",
               foreground: "#ECEDEE",
           }
         }
