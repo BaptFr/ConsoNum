@@ -12,7 +12,7 @@ import NextLink from "next/link";
 
 export const Navbar = () => {
   return (
-    <HeroNavbar maxWidth="xl" position="sticky">
+    <HeroNavbar maxWidth="xl" position="sticky" className="w-full p-5 bg-white/20">
       <NavbarBrand>
         <NextLink href="/" className="font-bold text-inherit">
           CONSONUM
@@ -37,10 +37,9 @@ export const Navbar = () => {
           <Link as={NextLink} href="/login">Connexion</Link>
         </NavbarItem>
         <NavbarItem>
-          <Button as={NextLink} href="/register" color="primary" variant="flat">
-            S'inscrire
-          </Button>
+          <Link as={NextLink} href="/register">S'inscrire</Link>
         </NavbarItem>
+
       </NavbarContent>
     </HeroNavbar>
   );
