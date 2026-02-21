@@ -8,7 +8,7 @@ import {
   Link,
   Button
 } from "@heroui/react";
-import NextLink from "next/link"; // Pour la navigation SPA performante
+import NextLink from "next/link";
 
 export const Navbar = () => {
   return (
