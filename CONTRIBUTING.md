@@ -17,7 +17,8 @@ Toujours créer une branche dont l'origine, la base de code vient d'abord de la 
 
 ```bash
 (basculer sur main)
-git checkout 
+git checkout
+
 (récupérer le code de la branche main)
 git pull origin main
 (Création et bascule sur une nouvelle branche créée)
