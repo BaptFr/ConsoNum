@@ -19,17 +19,23 @@ class UserController extends AbstractController
 {
     #[Route('/register', name: 'register', methods: ['POST'])]
     public function create(
-        Request $request, 
+        Request $request,
         EntityManagerInterface $em,
-        UserPasswordHasherInteface $passwordHasher,
+        UserPasswordHasherInterface $passwordHasher,
         ValidatorInterface $validator
-        ): JsonResponse
-    {
+    ): JsonResponse {
         $data = json_decode($request->getContent(), true);
 
-        if (empty($data['password']) || strlen($data['password']) < 6) {
+        if (empty($data['email']) || empty($data['password'])) {
             return new JsonResponse(
-                ['error' =>  'Email et mot de passe requis'], 
+                ['error' => 'Email et mot de passe requis'],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        if (strlen($data['password']) < 6) {
+            return new JsonResponse(
+                ['error' => 'Le mot de passe doit contenir au moins 6 caractères'],
                 Response::HTTP_BAD_REQUEST
             );
         }
@@ -70,11 +76,11 @@ class UserController extends AbstractController
 
     #[Route('/me', name: 'me', methods: ['GET'])]
     public function me(#[CurrentUser] ?User $user): JsonResponse
-        {
+    {
         if (!$user) {
             return $this->json(['error' => 'User not found'], Response::HTTP_UNAUTHORIZED);
         }
-        
+
         $userData = [
             'id' => $user->getId(),
             'email' => $user->getEmail(),
