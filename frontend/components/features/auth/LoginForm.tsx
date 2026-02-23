@@ -1,12 +1,16 @@
 'use client';
 
-import { Input, Button, Link } from "@heroui/react";
 import { useState } from "react";
 import NextLink from "next/link";
 import { useRouter } from "next/navigation";
+import { Input, Button, Link } from "@heroui/react";
+import { useAuth } from "@/contexts/AuthContext";
+
 
 export const LoginForm = () => {
   const router = useRouter()
+  const { login } = useAuth(); 
+
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,8 +41,7 @@ export const LoginForm = () => {
       }
 
       const data = await res.json();
-      localStorage.setItem("token", data.token);
-
+      login(data.token);  
       router.push("/");
 
     } catch (err: any) {

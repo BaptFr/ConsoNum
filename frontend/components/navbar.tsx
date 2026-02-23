@@ -1,16 +1,22 @@
 'use client';
 
+import { isAuthenticated, logout } from "@/lib/auth";
 import {
   Navbar as HeroNavbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  Link,
   Button
 } from "@heroui/react";
 import NextLink from "next/link";
+import { useEffect, useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+
 
 export const Navbar = () => {
+const { isAuthenticated, logout } = useAuth();
+
+
   return (
     <HeroNavbar maxWidth="xl" position="sticky" className="w-full p-5 bg-white/20">
       <NavbarBrand>
@@ -19,27 +25,48 @@ export const Navbar = () => {
         </NextLink>
       </NavbarBrand>
 
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem>
-          <Link as={NextLink} color="foreground" href="/calculateur">
-            Calculateur
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link as={NextLink} color="foreground" href="/conseils">
-            Conseils
-          </Link>
-        </NavbarItem>
-      </NavbarContent>
-
       <NavbarContent justify="end">
-        <NavbarItem className="hidden lg:flex">
-          <Link as={NextLink} href="/login">Connexion</Link>
-        </NavbarItem>
+        {isAuthenticated ? (
+          <>
+            <NavbarItem>
+              <NextLink href="/dashboard">
+                Profil
+              </NextLink>
+            </NavbarItem>
+            <NavbarItem>
+              <Button
+                color="danger"
+                variant="flat"
+                size="sm"
+                onPress={logout}
+              >
+                Déconnexion
+              </Button>
+            </NavbarItem>
+          </>
+        ) : (
+          <>
         <NavbarItem>
-          <Link as={NextLink} href="/register">S'inscrire</Link>
+          <NextLink color="foreground" href="/calculateur">
+            Calculateur
+          </NextLink>
         </NavbarItem>
-
+         <NextLink href="/login">
+                Connexion
+          </NextLink>
+        <NavbarItem>
+            <Button
+                as={NextLink}
+                href="/register"
+                color="primary"
+                variant="flat"
+                size="sm"
+              >
+                Inscription
+              </Button>
+        </NavbarItem>
+         </>
+        )}
       </NavbarContent>
     </HeroNavbar>
   );
