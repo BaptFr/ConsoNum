@@ -10,6 +10,7 @@
 /backend/.env.local
 /backend/.env.local.php
 /backend/.env.*.local
+/backend/config/jwt/*.pem
 
 ### Cache & logs ###
 /backend/var/cache/
