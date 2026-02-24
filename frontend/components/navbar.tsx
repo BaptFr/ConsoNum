@@ -14,7 +14,7 @@ import { useAuth } from "@/contexts/AuthContext";
 
 
 export const Navbar = () => {
-const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
 
 
   return (
@@ -29,7 +29,17 @@ const { isAuthenticated, logout } = useAuth();
         {isAuthenticated ? (
           <>
             <NavbarItem>
-              <NextLink href="/dashboard">
+              <NextLink href="/calculator" className="text-foreground">
+                Questionnaire
+              </NextLink>
+            </NavbarItem>
+            <NavbarItem>
+              <NextLink href="/history" className="text-foreground">
+                Historique
+              </NextLink>
+            </NavbarItem>
+            <NavbarItem>
+              <NextLink href="/dashboard" className="text-foreground">
                 Profil
               </NextLink>
             </NavbarItem>
@@ -46,16 +56,12 @@ const { isAuthenticated, logout } = useAuth();
           </>
         ) : (
           <>
-        <NavbarItem>
-          <NextLink color="foreground" href="/calculateur">
-            Calculateur
-          </NextLink>
-        </NavbarItem>
-         <NextLink href="/login">
-                Connexion
-          </NextLink>
-        <NavbarItem>
-            <Button
+            
+            <NextLink href="/login" className="text-foreground">
+              Connexion
+            </NextLink>
+            <NavbarItem>
+              <Button
                 as={NextLink}
                 href="/register"
                 color="primary"
@@ -64,8 +70,8 @@ const { isAuthenticated, logout } = useAuth();
               >
                 Inscription
               </Button>
-        </NavbarItem>
-         </>
+            </NavbarItem>
+          </>
         )}
       </NavbarContent>
     </HeroNavbar>
