@@ -21,18 +21,16 @@ class Resultat
     #[Groups(['resultat:read'])]
     private ?float $score = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     #[Groups(['resultat:read'])]
     private ?\DateTimeImmutable $date = null;
 
     #[ORM\ManyToOne(inversedBy: 'resultats')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['resultat:read'])]
     private ?User $user = null;
 
     #[ORM\ManyToOne(targetEntity: Question::class)]
     #[ORM\JoinColumn(nullable: true)]
-    #[Groups(['resultat:read'])]
     private ?Question $question = null;
 
     #[ORM\Column(nullable: true)]
@@ -43,7 +41,7 @@ class Resultat
     public function onPrePersist(): void
     {
         if (!$this->date) {
-            $this->date = new \DateTime();
+            $this->date = new \DateTimeImmutable();
         }
     }
     
