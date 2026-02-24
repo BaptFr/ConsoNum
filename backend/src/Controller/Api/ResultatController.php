@@ -19,7 +19,7 @@ final class ResultatController extends AbstractController
 {
     public function __construct(private EntityManagerInterface $em) {}
 
-    // Récpère les bons résultats: priority 10 pour Symfony ne confonde pas "me" et un id}"
+    // Récpère les bons résultats: priority 10 pour Symfony ne confonde pas "me" et un id"
     #[Route('/me', name: 'me', methods: ['GET'], priority: 10)]
     public function getMyResults(Security $security, ResultatRepository $resultatRepository): JsonResponse
     {
@@ -54,41 +54,40 @@ final class ResultatController extends AbstractController
     }
 
     // POST /api/resultat -> créer un résultat
-    // Pas d question obligatoire pour résultats ??
-    #[Route('', name: 'create', methods: ['POST'])]
+   #[Route('', name: 'create', methods: ['POST'])]
     public function create(Request $request, #[CurrentUser] ?User $user): JsonResponse
     {
-        if (!$user) {
+    if (!$user) {
         return $this->json(['error' => 'Authentication required'], 401);
-        }
+    }
 
-        $data = json_decode($request->getContent(), true);
-        $questionId = $data['question_id'] ?? 0;
-        $question = $this->em->getRepository(Question::class)->find($data['question_id'] ?? 0);
+    $data = json_decode($request->getContent(), true);
 
-        if (!$question) {
-            return $this->json(['error' => 'Question not found'], 404);
-        }
-
-        $resultat = new Resultat();
-        $resultat->setScore($data['score'] ?? 0);
-        $resultat->setUser($user);
+    $resultat = new Resultat();
+    $resultat->setScore($data['score'] ?? 0);
+    $resultat->setUser($user);
+    $resultat->setDate(new \DateTimeImmutable());
+    
+    // Question option.
+    if (isset($data['question_id'])) {
+        $question = $this->em->getRepository(Question::class)->find($data['question_id']);
         if ($question) {
             $resultat->setQuestion($question);
         }
-        
-        if (isset($data['details'])) {
-            $resultat->setDetails($data['details']);
-        }
-        
-        $this->em->persist($resultat);
-        $this->em->flush();
-
-        return $this->json([
-            'message' => 'Resultat created',
-            'id' => $resultat->getId(),
-        ], 201);
     }
+    
+    if (isset($data['details'])) {
+        $resultat->setDetails($data['details']);
+    }
+    
+    $this->em->persist($resultat);
+    $this->em->flush();
+
+    return $this->json([
+        'message' => 'Resultat created',
+        'id' => $resultat->getId(),
+    ], 201);
+}
 
     // PUT /api/resultat/{id} -> MAJ un résultat
     #[Route('/{id}', name: 'update', methods: ['PUT'])]
