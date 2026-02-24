@@ -11,6 +11,12 @@
 /backend/.env.local.php
 /backend/.env.*.local
 /backend/config/jwt/*.pem
+/backend/.env.test*
+backend/public/bundles/
+
+/backend/public/bundles/
+/backend/.phpunit.result.cache
+/backend/var/sessions/
 
 ### Cache & logs ###
 /backend/var/cache/
@@ -32,6 +38,11 @@ vendor/
 vendor/*
 /vendor/*
 
+# PHPUnit
+backend/.phpunit.result.cache
+backend/phpunit.xml
+
+
 #Docker
 docker-compose.yaml
 
@@ -52,6 +63,8 @@ frontend/coverage/
 frontend/.vercel/
 frontend/.pnp*
 frontend/.env*
+/backend/.env.test*
+
 
 # Logs & Debug
 frontend/npm-debug.log*
@@ -62,3 +75,123 @@ frontend/.pnpm-debug.log*
 # TypeScript
 frontend/*.tsbuildinfo
 frontend/next-env.d.ts
+
+
+###############################################################################
+# BACKEND SYMFONY
+###############################################################################
+
+# Dependencies
+backend/vendor/
+
+# Environment variables
+
+
+# Cache & Logs
+backend/var/
+backend/var/cache/
+backend/var/log/
+backend/var/sessions/
+
+# JWT Keys (IMPORTANT !)
+backend/config/jwt/*.pem
+backend/config/jwt/private.pem
+backend/config/jwt/public.pem
+
+# Public bundles (générés automatiquement)
+
+
+
+# Composer
+backend/composer.lock
+
+###############################################################################
+# FRONTEND NEXT.JS
+###############################################################################
+
+# Dependencies
+frontend/node_modules/
+
+# Next.js build output
+frontend/.next/
+frontend/out/
+
+# Environment variables
+frontend/.env
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
+# Production build
+frontend/build/
+frontend/dist/
+
+# Logs
+frontend/*.log
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+frontend/lerna-debug.log*
+
+# Testing
+frontend/coverage/
+frontend/.nyc_output/
+
+# TypeScript
+frontend/*.tsbuildinfo
+frontend/next-env.d.ts
+
+###############################################################################
+# DOCKER
+###############################################################################
+
+# Volumes persistants
+docker/data/
+
+# Docker env (si vous en avez)
+.env.docker
+
+###############################################################################
+# IDE & OS
+###############################################################################
+
+# VSCode
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# PhpStorm / WebStorm
+.idea/
+*.iml
+
+# Mac
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+###############################################################################
+# AUTRES
+###############################################################################
+
+# Logs génériques
+*.log
+
+# Backups
+*.bak
+*.swp
+*.swo
+*~
+
+# Temporary files
+tmp/
+temp/
