@@ -48,15 +48,14 @@ export default function DashboardPage() {
         <div className="container mx-auto p-4 max-w-4xl">
             <Card>
                 <CardHeader>
-                    <h1 className="text-2xl font-bold">Tableau de bord</h1>
+                    <h1 className="text-2xl font-bold">Informations du profil</h1>
                 </CardHeader>
-                <CardBody>
-                    <p className="text-lg">Bienvenue ! <span className="font-semibold"></span> </p>
-                    <p className="text-default-500 mt-2">Email : {user?.email}</p>
-                    <p className="text-default-500 mt-2">Score actuel : {user?.score || 0}</p>
-                    <p className="text-small text-default-400 mt-4">
-                        Compte créé le : {user?.createdAt}
+                <CardBody className="flex flex-col justify-start items-center gap-15">
+                    <p className="text-default-500 mt-2">Email : </p> {user?.email}
+                    <p className=" text-default-500 mt-10">
+                        Compte créé le :
                     </p>
+                     {user?.createdAt}
                 </CardBody>
             </Card>
         </div>
