@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 
 #[Route('/api/users', name: 'api_users_')]
@@ -61,8 +62,14 @@ class UserController extends AbstractController
         $user->setScore(0);
         $user->setCreatedAt(new \DateTime());
 
-        $em->persist($user);
-        $em->flush();
+        try {
+                $em->persist($user);
+                $em->flush();
+        } catch (UniqueConstraintViolationException $e) {
+            return $this->json([
+                'error' => 'Email already exists'
+            ], Response::HTTP_CONFLICT);
+        }
 
         return new JsonResponse([
             'status' => 'User created',
