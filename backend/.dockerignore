@@ -1,0 +1,25 @@
+# Git
+.git/
+.gitignore
+
+# Tests
+tests/
+phpunit.xml.dist
+.phpunit.result.cache
+
+# DDev
+.env.local
+.env.test
+.env.test.local
+var/cache/*
+var/log/*
+vendor/
+
+# IDE
+.idea/
+.vscode/
+
+# Other
+node_modules/
+*.md
+docker-compose*.yml
