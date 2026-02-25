@@ -1,0 +1,63 @@
+# Stage 1: Dependencies - Installation
+
+FROM node:20-alpine AS deps
+
+WORKDIR /app
+
+# Dependencies files copy
+COPY package.json pnpm-lock.yaml ./
+
+# npmp install
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# Dependencies install
+RUN pnpm install --frozen-lockfile
+
+# Stage 2: Builder - Build de l'application
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+#node_modules copy from deps
+COPY --from=deps /app/node_modules ./node_modules
+
+# Code copy
+COPY . .
+
+#Env. var. for build
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_ENV=production
+
+# NextJS build ( standalone for prod)
+RUN corepack enable && corepack prepare pnpm@latest --activate \
+    && pnpm build
+
+# Stage 3: Runner - Final image
+
+FROM node:20-alpine AS runner
+
+WORKDIR /app
+
+#Non root user creation
+RUN addgroup --system --gid 1001 nodejs \
+    && adduser --system --uid 1001 nextjs
+
+# Necessaries files copy
+COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+#Env. var.
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
+
+# Non root user
+USER nextjs
+
+# Exposed Port
+EXPOSE 3000
+
+# Start command
+CMD ["node", "server.js"]
