@@ -1,0 +1,33 @@
+# Git
+.git/
+.gitignore
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Next.js
+.next/
+out/
+
+# Dev.
+.env*.local
+*.log
+
+# Tests
+coverage/
+.nyc_output/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Other
+README.md
+docker-compose*.yml

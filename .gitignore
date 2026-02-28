@@ -1,6 +1,7 @@
 
 .env
 .env.dev
+.env.prod
 .log
 
 
@@ -13,6 +14,7 @@
 /backend/config/jwt/*.pem
 /backend/.env.test*
 backend/public/bundles/
+/backend/docker-compose.yaml
 
 /backend/public/bundles/
 /backend/.phpunit.result.cache
