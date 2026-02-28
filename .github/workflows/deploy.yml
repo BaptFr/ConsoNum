@@ -18,7 +18,9 @@ jobs:
         script: |
           cd /var/www/EcoNum
           git pull origin main
+          if [ ! -f .env ]; then
+            ln -s .env.prod .env
+          fi
           docker compose -f docker-compose.prod.yml down
           docker compose -f docker-compose.prod.yml build
           docker compose -f docker-compose.prod.yml up -d
-          docker compose -f docker-compose.prod.yml exec -T backend php bin/console cache:clear
