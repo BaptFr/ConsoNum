@@ -31,12 +31,6 @@ COPY . .
 # Optimize autoload
 RUN composer dump-autoload --optimize --classmap-authoritative
 
-# Symfony cache generation
-RUN php bin/console cache:clear --env=prod --no-debug \
-    && php bin/console cache:warmup --env=prod --no-debug
-
-
-
 # Stage 2: Production - Final Image 
 FROM php:8.2-fpm-alpine
 

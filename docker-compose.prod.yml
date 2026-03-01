@@ -25,7 +25,6 @@ services:
   # BACKEND SYMFONY
 
   backend:
-    backend:
     env_file: .env.prod
     build:
       context: ./backend
