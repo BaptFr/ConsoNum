@@ -16,16 +16,17 @@ services:
       - db_data:/var/lib/mysql
 
   php:
-    image: php:8.2-fpm
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     container_name: consonum_php
-    working_dir: /var/www/html
+    working_dir: /app
     volumes:
-      - .:/var/www/html
+      - .:/app
     depends_on:
       - db
     environment:
       DATABASE_URL: "mysql://consonum:mariadb@db:3306/consonum_db?serverVersion=mariadb-10.11.6"
-
   web:
     image: nginx:alpine
     container_name: consonum_web

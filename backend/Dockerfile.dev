@@ -1,0 +1,47 @@
+FROM php:8.2-fpm-alpine
+
+# Php extensions needed
+RUN apk add --no-cache \
+    bash \
+    git \
+    unzip \
+    libzip-dev \
+    icu-dev \
+    oniguruma-dev \
+    && docker-php-ext-install \
+    pdo_mysql \
+    zip \
+    intl \
+    opcache
+
+# Install Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+# Working directory
+WORKDIR /app
+
+# Copy composer files
+COPY composer.json composer.lock symfony.lock ./
+
+# Install dependencies (WITH dev dependencies)
+RUN composer install --optimize-autoloader --no-scripts --no-interaction
+
+# Copy all code
+COPY . .
+
+# PHP config for dev
+COPY <<EOF /usr/local/etc/php/conf.d/symfony.ini
+opcache.enable=1
+memory_limit=256M
+upload_max_filesize=20M
+post_max_size=20M
+EOF
+
+# Default env for dev
+ENV APP_ENV=dev
+ENV APP_DEBUG=1
+
+# Exposed Port
+EXPOSE 9000
+
+CMD ["php-fpm"]
