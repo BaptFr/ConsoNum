@@ -7,7 +7,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Deploy via SSH
       uses: appleboy/ssh-action@v1.0.0
@@ -15,6 +15,9 @@ jobs:
         host: ${{ secrets.SSH_HOST }}
         username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
+        proxy_host: ${{ secrets.BASTION_IP }}
+        proxy_username: root
+        proxy_key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           cd /var/www/EcoNum
           git pull origin main
