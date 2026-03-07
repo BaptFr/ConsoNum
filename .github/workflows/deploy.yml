@@ -2,14 +2,29 @@ name: Deploy to Production
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop ]
 
 jobs:
-  deploy:
+  deploy-staging:
     runs-on: ubuntu-latest
-
+    if: github.ref == 'refs/heads/develop'
     steps:
-    - name: Deploy via SSH
+    - name: Deploy to Staging
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.STAGING_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd /var/www/EcoNum
+          git pull origin develop
+          docker-compose --env-file .env.staging -f docker-compose.staging.yml down
+          docker-compose --env-file .env.staging -f docker-compose.staging.yml up -d --build
+  deploy-production:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - name: Deploy to Production
       uses: appleboy/ssh-action@v1.0.0
       with:
         host: ${{ secrets.SSH_HOST }}
@@ -21,9 +36,6 @@ jobs:
         script: |
           cd /var/www/EcoNum
           git pull origin main
-          if [ ! -f .env ]; then
-            ln -s .env.prod .env
-          fi
           docker compose -f docker-compose.prod.yml down
           docker compose -f docker-compose.prod.yml build
           docker compose -f docker-compose.prod.yml up -d
