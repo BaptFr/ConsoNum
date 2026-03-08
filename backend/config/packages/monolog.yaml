@@ -3,9 +3,10 @@ monolog:
         main:
             type: stream
             path: "%kernel.logs_dir%/%kernel.environment%.log"
-            level: debug
+            level: info
             channels: ["!event"]
         error:
             type: stream
             path: "%kernel.logs_dir%/error.log"
             level: error
+            
