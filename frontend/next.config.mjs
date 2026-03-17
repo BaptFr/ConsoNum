@@ -3,15 +3,17 @@ const nextConfig = {
   reactStrictMode: true,
   output: 'standalone',
   async headers() {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
-
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    if (!apiUrl) {
+      throw new Error("Critical error: NEXT_PUBLIC_API_URL environment variable is missing.");
+    }
     return [
       {
         source: '/(.*)',
         headers: [
           {
             key: 'Content-Security-Policy',
-            value: `default-src 'self'; connect-src 'self' ${apiUrl}; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline';`,          
+            value: `default-src 'self'; connect-src 'self' ${apiUrl}; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline';`,
           },
           {
             key: 'X-Frame-Options',
@@ -28,3 +30,4 @@ const nextConfig = {
 };
 
 export default nextConfig;
+
