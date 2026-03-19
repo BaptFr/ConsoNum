@@ -14,6 +14,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 #[Route('/api/users', name: 'api_users_')]
 class UserController extends AbstractController
@@ -23,7 +25,8 @@ class UserController extends AbstractController
         Request $request,
         EntityManagerInterface $em,
         UserPasswordHasherInterface $passwordHasher,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        MailerInterface $mailer
     ): JsonResponse {
         $data = json_decode($request->getContent(), true);
 
@@ -47,7 +50,7 @@ class UserController extends AbstractController
         if (count($errors) > 0) {
             $errorMessages = [];
             foreach ($errors as $error) {
-                // erreur pour le frontend
+                // error for frontend
                 $errorMessages[] = [
                     'field' => $error->getPropertyPath(),
                     'message' => $error->getMessage(),
@@ -56,11 +59,13 @@ class UserController extends AbstractController
             return new JsonResponse(['errors' => $errorMessages], Response::HTTP_BAD_REQUEST);
         }
 
-        // Hash du mot de passe
+        //  password Hash
         $hashedPassword = $passwordHasher->hashPassword($user, $data['password']);
         $user->setPassword($hashedPassword);
         $user->setScore(0);
         $user->setCreatedAt(new \DateTime());
+        $user->setIsVerified(false);
+        $user->setVerificationToken(bin2hex(random_bytes(32)));
 
         try {
                 $em->persist($user);
@@ -70,14 +75,56 @@ class UserController extends AbstractController
                 'error' => 'Email already exists'
             ], Response::HTTP_CONFLICT);
         }
+        
+        $verificationUrl = $_ENV['FRONTEND_URL'] . '/verify?token=' . $user->getVerificationToken();
+
+        $email = (new Email())
+            ->from('noreply@consonum.fr')
+            ->to($user->getEmail())
+            ->subject('Confirmez votre adresse email - ConsoNum')
+            ->html('<p>Bonjour,</p><p>Cliquez sur ce lien pour confirmer votre inscription :</p><p><a href="' . $verificationUrl . '">' . $verificationUrl . '</a></p>');
+            
+        $mailer->send($email);
 
         return new JsonResponse([
             'status' => 'User created',
             'user' => [
                 'id' => $user->getId(),
-                'email' => $user->getEmail(),
+                'message' => 'Un email de confirmation a été envoyé.'
             ]
         ], Response::HTTP_CREATED);
+    }
+
+    //Creation verification 
+    #[Route('/verify/{token}', name: 'verify', methods: ['GET'])]
+    public function verify(
+        string $token,
+        EntityManagerInterface $em
+    ): JsonResponse {
+        $user = $em->getRepository(User::class)->findOneBy(['verificationToken' => $token]);
+
+        if (!$user) {
+            return new JsonResponse(
+                ['error' => 'Token invalide ou expiré'],
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        if ($user->isVerified()) {
+            return new JsonResponse(
+                ['message' => 'Compte déjà vérifié'],
+                Response::HTTP_OK
+            );
+        }
+
+        $user->setIsVerified(true);
+        $user->setVerificationToken(null);
+        $em->flush();
+
+        return new JsonResponse(
+            ['message' => 'Compte vérifié avec succès'],
+            Response::HTTP_OK
+        );
     }
 
 
@@ -93,7 +140,7 @@ class UserController extends AbstractController
             'email' => $user->getEmail(),
             'roles' => $user->getRoles(),
             'score' => $user->getScore(),
-            // fdate formatée pour JSON
+            // fdate format for JSON
             'createdAt' => $user->getCreatedAt() ? $user->getCreatedAt()->format('Y-m-d H:i:s') : null,
         ];
 
