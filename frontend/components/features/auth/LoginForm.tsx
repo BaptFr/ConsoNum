@@ -27,7 +27,6 @@ export const LoginForm = () => {
     }
 
     setIsLoading(true);
-    //TODO URL
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
         method: "POST",
