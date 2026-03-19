@@ -97,12 +97,12 @@ backend/var/cache/
 backend/var/log/
 backend/var/sessions/
 
-# JWT Keys (IMPORTANT !)
+# JWT Keys 
 backend/config/jwt/*.pem
 backend/config/jwt/private.pem
 backend/config/jwt/public.pem
 
-# Public bundles (générés automatiquement)
+# Public bundles
 
 
 
