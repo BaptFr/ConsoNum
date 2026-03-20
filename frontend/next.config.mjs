@@ -4,6 +4,8 @@ const nextConfig = {
   output: 'standalone',
   async headers() {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const apiOrigin = new URL(apiUrl).origin;
+
     if (!apiUrl) {
       throw new Error("Critical error: NEXT_PUBLIC_API_URL environment variable is missing.");
     }
@@ -13,7 +15,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Content-Security-Policy',
-            value: `default-src 'self'; connect-src 'self' ${apiUrl}; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline';`,
+            value: `default-src 'self'; connect-src 'self' ${apiOrigin}; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline';`,
           },
           {
             key: 'X-Frame-Options',

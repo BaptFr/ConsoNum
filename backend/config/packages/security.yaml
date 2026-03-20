@@ -18,6 +18,7 @@ security:
             pattern: ^/api/auth/login
             stateless: true
             provider: app_user_provider
+            user_checker: App\Security\UserChecker
             json_login:
                 check_path: /api/auth/login
                 username_path: email
@@ -31,10 +32,11 @@ security:
             stateless: true
             jwt: ~ 
 
-    # Règles d'accès
+    # Access Rules
     access_control:
         - { path: ^/api/auth/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/users/register, roles: PUBLIC_ACCESS }
+        - { path: ^/api/users/verify, roles: PUBLIC_ACCESS }
 
-        # routes commençant par /api besoin d'être authentifié.
+        # path begins by /api need to be identified.
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }

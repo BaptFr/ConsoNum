@@ -50,7 +50,7 @@ export default function RegisterPage() {
         throw new Error(data.message || "Erreur lors de l'inscription.");
       }
 
-      router.push("/login?registered=true");
+      router.push("/register/pending");
     } catch (err: any) {
       setError(err.message);
     } finally {

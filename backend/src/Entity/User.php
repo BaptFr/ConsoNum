@@ -35,6 +35,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "datetime", options: ["default" => "CURRENT_TIMESTAMP"])]
     private ?\DateTimeInterface $createdAt = null;
 
+    #[ORM\Column(type: "boolean", options: ["default" => false])]
+    private bool $isVerified = false;
+
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    private ?string $verificationToken = null;
+
     /**
      * @var Collection<int, Resultat>
      */
@@ -162,7 +168,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function eraseCredentials(): void
     {
-        //données temporaires sensibles du user,
-        // eff
+        //User datas temp
+        // Delete
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): static
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getVerificationToken(): ?string
+    {
+        return $this->verificationToken;
+    }
+
+    public function setVerificationToken(?string $verificationToken): static
+    {
+        $this->verificationToken = $verificationToken;
+
+        return $this;
     }
 }
