@@ -27,6 +27,8 @@ services:
       - db
     environment:
       DATABASE_URL: "mysql://consonum:mariadb@db:3306/consonum_db?serverVersion=mariadb-10.11.6"
+      CORS_ALLOW_ORIGIN: '^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$'
+
   web:
     image: nginx:alpine
     container_name: consonum_web
