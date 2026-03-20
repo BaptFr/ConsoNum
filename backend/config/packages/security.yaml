@@ -37,6 +37,7 @@ security:
         - { path: ^/api/auth/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/users/register, roles: PUBLIC_ACCESS }
         - { path: ^/api/users/verify, roles: PUBLIC_ACCESS }
+        - { path: ^/api/data-request, roles: PUBLIC_ACCESS }
 
         # path begins by /api need to be identified.
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
