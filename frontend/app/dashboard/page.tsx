@@ -5,9 +5,13 @@ import { useRouter } from "next/navigation";
 import { getToken } from "@/lib/auth";
 import { Card, CardBody, CardHeader, Spinner } from "@heroui/react";
 
+interface User {
+  email: string;
+  createdAt: string;
+}
 export default function DashboardPage() {
     const router = useRouter();
-    const [user, setUser] = useState<any>(null);
+    const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
