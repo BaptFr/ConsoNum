@@ -167,7 +167,7 @@ export default function CalculatorPage() {
             <Card>
                 <CardHeader>
                     <h1 className="text-2xl font-bold">
-                        Calculateur d'Empreinte Numérique
+                        Calculateur d&apos;Empreinte Numérique
                     </h1>
                 </CardHeader>
                 <CardBody className="space-y-6">

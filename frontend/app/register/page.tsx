@@ -51,8 +51,8 @@ export default function RegisterPage() {
       }
 
       router.push("/register/pending");
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Une erreur est survenue.");
     } finally {
       setIsLoading(false);
     }

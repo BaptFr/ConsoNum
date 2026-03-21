@@ -43,8 +43,8 @@ export const LoginForm = () => {
       login(data.token);  
       router.push("/");
 
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Erreur survenue");
     } finally {
       setIsLoading(false);
     }
