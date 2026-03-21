@@ -2,7 +2,7 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main, develop ]
+    branches-ignore: [ main ]
 
   pull_request:
     branches: [ develop ]
@@ -11,8 +11,6 @@ on:
 jobs:
   ci-frontend:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop' || github.event_name == 'pull_request'
-
     defaults:
       run:
         working-directory: frontend
