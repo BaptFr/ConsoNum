@@ -1,6 +1,5 @@
 'use client';
 
-import { isAuthenticated, logout } from "@/lib/auth";
 import {
   Navbar as HeroNavbar,
   NavbarBrand,
@@ -9,7 +8,6 @@ import {
   Button
 } from "@heroui/react";
 import NextLink from "next/link";
-import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 
 
