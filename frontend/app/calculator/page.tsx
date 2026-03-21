@@ -13,6 +13,9 @@ import {
 import { useRouter } from "next/navigation";
 import { getToken } from "@/lib/auth";
 
+import { calculateScore } from '@/lib/utils/scoreCalculator'
+
+
 interface Reponse {
     id: number;
     texte: string;
@@ -67,30 +70,6 @@ export default function CalculatorPage() {
         setAnswers((prev) => ({ ...prev, [questionId]: reponseValeur }));
     };
 
-    const calculateScore = () => {
-        const score = Object.values(answers).reduce((sum, val) => sum + val, 0);
-
-        let profil = "";
-        let message = "";
-
-        if (score <= 7) {
-            profil = " Exemplaire";
-            message = "Vos pratiques numériques sont très sobres ! Continuez ainsi.";
-        } else if (score <= 15) {
-            profil = " Correct";
-            message =
-                "Vous êtes sur la bonne voie, quelques améliorations possibles.";
-        } else if (score <= 22) {
-            profil = " À améliorer";
-            message =
-                "Votre empreinte numérique est moyenne, des efforts sont nécessaires.";
-        } else {
-            profil = " Problématique";
-            message = "Votre empreinte numérique est élevée, agissez rapidement !";
-        }
-
-        return { score, profil, message };
-    };
 
     const handleSubmit = async () => {
         if (Object.keys(answers).length < questions.length) {
@@ -100,7 +79,7 @@ export default function CalculatorPage() {
 
         setSubmitting(true);
 
-        const { score, profil, message } = calculateScore();
+        const { score, profil, message } = calculateScore(answers)
         setResult({ score, profil, message });
 
         const token = getToken();
