@@ -20,7 +20,7 @@ test('getToken retourne le token si présent', () => {
 })
 
 // T03
-test('setToken stocke le token en localStorage', () => {
+test('setToken stocke le token dans le localStorage', () => {
   setToken('mon-token-test')
   expect(localStorage.getItem(TOKEN_KEY)).toBe('mon-token-test')
 })

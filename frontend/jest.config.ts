@@ -12,7 +12,7 @@ const config: Config = {
   collectCoverageFrom: [
     'lib/**/*.ts',
     'components/**/*.tsx',
-    'app/calculator/page.tsx',
+    'app/calculator/page.tsx', 
     '!**/*.d.ts',
   ],
 }
