@@ -50,20 +50,23 @@ export default function CalculatorPage() {
         }
 
         //TODO refactor
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/question`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                setQuestions(data);
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.error(err);
-                setLoading(false);
-            });
+        const fetchQuestions = async () => {
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/question`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+                const data = await res.json()
+                setQuestions(Array.isArray(data) ? data : [])
+            } catch (err) {
+                console.error(err)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        fetchQuestions()
     }, [router]);
 
     const handleAnswerChange = (questionId: number, reponseValeur: number) => {
@@ -182,7 +185,7 @@ export default function CalculatorPage() {
                                     }
                                 >
                                     {question.reponses.map((reponse) => (
-                                        <Radio key={reponse.id} value={reponse.valeur.toString()}>
+                                        <Radio key={reponse.id} value={reponse.valeur.toString()} data-testid={`reponse-${reponse.id}`}>
                                             {reponse.texte}
                                         </Radio>
                                     ))}
