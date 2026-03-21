@@ -13,6 +13,9 @@ import {
 import { useRouter } from "next/navigation";
 import { getToken } from "@/lib/auth";
 
+import { calculateScore } from '@/lib/utils/scoreCalculator'
+
+
 interface Reponse {
     id: number;
     texte: string;
@@ -47,50 +50,29 @@ export default function CalculatorPage() {
         }
 
         //TODO refactor
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/question`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                setQuestions(data);
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.error(err);
-                setLoading(false);
-            });
+        const fetchQuestions = async () => {
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/question`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+                const data = await res.json()
+                setQuestions(Array.isArray(data) ? data : [])
+            } catch (err) {
+                console.error(err)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        fetchQuestions()
     }, [router]);
 
     const handleAnswerChange = (questionId: number, reponseValeur: number) => {
         setAnswers((prev) => ({ ...prev, [questionId]: reponseValeur }));
     };
 
-    const calculateScore = () => {
-        const score = Object.values(answers).reduce((sum, val) => sum + val, 0);
-
-        let profil = "";
-        let message = "";
-
-        if (score <= 7) {
-            profil = " Exemplaire";
-            message = "Vos pratiques numériques sont très sobres ! Continuez ainsi.";
-        } else if (score <= 15) {
-            profil = " Correct";
-            message =
-                "Vous êtes sur la bonne voie, quelques améliorations possibles.";
-        } else if (score <= 22) {
-            profil = " À améliorer";
-            message =
-                "Votre empreinte numérique est moyenne, des efforts sont nécessaires.";
-        } else {
-            profil = " Problématique";
-            message = "Votre empreinte numérique est élevée, agissez rapidement !";
-        }
-
-        return { score, profil, message };
-    };
 
     const handleSubmit = async () => {
         if (Object.keys(answers).length < questions.length) {
@@ -100,7 +82,7 @@ export default function CalculatorPage() {
 
         setSubmitting(true);
 
-        const { score, profil, message } = calculateScore();
+        const { score, profil, message } = calculateScore(answers)
         setResult({ score, profil, message });
 
         const token = getToken();
@@ -185,7 +167,7 @@ export default function CalculatorPage() {
             <Card>
                 <CardHeader>
                     <h1 className="text-2xl font-bold">
-                        Calculateur d'Empreinte Numérique
+                        Calculateur d&apos;Empreinte Numérique
                     </h1>
                 </CardHeader>
                 <CardBody className="space-y-6">
@@ -203,7 +185,7 @@ export default function CalculatorPage() {
                                     }
                                 >
                                     {question.reponses.map((reponse) => (
-                                        <Radio key={reponse.id} value={reponse.valeur.toString()}>
+                                        <Radio key={reponse.id} value={reponse.valeur.toString()} data-testid={`reponse-${reponse.id}`}>
                                             {reponse.texte}
                                         </Radio>
                                     ))}
