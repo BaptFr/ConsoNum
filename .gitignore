@@ -23,6 +23,9 @@ backend/public/bundles/
 /backend/.phpunit.result.cache
 /backend/var/sessions/
 
+
+#Tests back-end
+backend/coverage-report/
 ### Cache & logs ###
 /backend/var/cache/
 /backend/var/log/
@@ -158,6 +161,7 @@ docker/data/
 # Docker env (si vous en avez)
 .env.docker
 
+docker-compose.prod.yml.backup
 ###############################################################################
 # IDE & OS
 ###############################################################################
