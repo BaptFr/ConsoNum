@@ -41,6 +41,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private ?string $verificationToken = null;
 
+    #[ORM\Column(type: "boolean", options: ["default" => false])]
+    private bool $hasPaid = false;
+
     /**
      * @var Collection<int, Resultat>
      */
@@ -192,6 +195,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setVerificationToken(?string $verificationToken): static
     {
         $this->verificationToken = $verificationToken;
+
+        return $this;
+    }
+
+    public function isHasPaid(): bool
+    {
+        return $this->hasPaid;
+    }
+
+    public function setHasPaid(bool $hasPaid): static
+    {
+        $this->hasPaid = $hasPaid;
 
         return $this;
     }

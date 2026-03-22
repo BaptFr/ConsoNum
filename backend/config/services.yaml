@@ -16,5 +16,13 @@ services:
     App\:
         resource: '../src/'
 
+    App\Service\PaymentService:
+        arguments:
+            $stripeSecretKey: '%env(STRIPE_SECRET_KEY)%'
+    
+    App\Controller\Api\PaymentController:
+        arguments:
+            $stripeWebhookSecret: '%env(STRIPE_WEBHOOK_SECRET)%'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
