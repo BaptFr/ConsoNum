@@ -9,7 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ReponseRepository::class)]
-#[ORM\HasLifeCycleCallbacks]
+#[ORM\HasLifecycleCallbacks]
 class Reponse
 {
     #[ORM\Id]
@@ -33,9 +33,6 @@ class Reponse
 
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $addAnotherProperty = null;
 
     #[ORM\ManyToOne(inversedBy: 'reponses')]
      #[ORM\JoinColumn(nullable: false)]
@@ -110,17 +107,6 @@ class Reponse
         return $this;
     }
 
-    public function getAddAnotherProperty(): ?string
-    {
-        return $this->addAnotherProperty;
-    }
-
-    public function setAddAnotherProperty(?string $addAnotherProperty): static
-    {
-        $this->addAnotherProperty = $addAnotherProperty;
-
-        return $this;
-    }
 
     public function getQuestion(): ?Question
     {
