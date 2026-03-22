@@ -40,10 +40,6 @@ class Question
 
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
-    
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $addAnotherProperty = null;
-
 
     /**
      * @var Collection<int, Reponse>
