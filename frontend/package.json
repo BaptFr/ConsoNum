@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@heroui/react": "^2.2.9",
+    "@stripe/react-stripe-js": "^5.6.1",
+    "@stripe/stripe-js": "^8.11.0",
     "framer-motion": "^11.0.0",
     "next": "16.1.7",
     "react": "^18",
