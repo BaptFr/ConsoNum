@@ -142,6 +142,7 @@ class UserController extends AbstractController
             'score' => $user->getScore(),
             // fdate format for JSON
             'createdAt' => $user->getCreatedAt() ? $user->getCreatedAt()->format('Y-m-d H:i:s') : null,
+            'hasPaid' => $user->isHasPaid(),
         ];
 
         return $this->json($userData);
