@@ -15,8 +15,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Content-Security-Policy',
-            value: `default-src 'self'; connect-src 'self' ${apiOrigin}; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline';`,
-          },
+            value: `default-src 'self'; connect-src 'self' ${apiOrigin} https://api.stripe.com https://*.stripe.com; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://js.stripe.com https://*.stripe.com; style-src 'self' 'unsafe-inline'; frame-src https://js.stripe.com https://*.stripe.com https://hooks.stripe.com;`,          },
           {
             key: 'X-Frame-Options',
             value: 'DENY',
