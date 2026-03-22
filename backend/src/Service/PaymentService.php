@@ -13,13 +13,13 @@ class PaymentService
         $this->stripe = new StripeClient($stripeSecretKey);
     }
 
-    public function createPaymentIntent(int $amount, string $currency = 'eur'): \Stripe\PaymentIntent
+    public function createPaymentIntent(int $amount, int $userId, string $currency = 'eur'): \Stripe\PaymentIntent
     {
         return $this->stripe->paymentIntents->create([
             'amount' => $amount,
             'currency' => $currency,
             'automatic_payment_methods' => ['enabled' => true],
-            'metadata' => ['user_id' => $userId],
+            'metadata' => ['user_id' => (string) $userId],
         ]);
     }
 

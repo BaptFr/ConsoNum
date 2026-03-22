@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\Entity\User;
 use App\Service\PaymentService;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,6 +27,7 @@ class PaymentController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function createIntent(): JsonResponse
     {
+        /** @var User $user */
         $user = $this->getUser();
 
         if ($user->isHasPaid()) {
@@ -57,10 +59,11 @@ class PaymentController extends AbstractController
 
         if ($event->type === 'payment_intent.succeeded') {
             $paymentIntent = $event->data->object;
-            $metadata = $paymentIntent->metadata;
+            // @phpstan-ignore-next-line
+            $metadata = (array) $paymentIntent->metadata;
 
             if (isset($metadata['user_id'])) {
-                $user = $this->userRepository->find($metadata['user_id']);
+                $user = $this->userRepository->find((int) $metadata['user_id']);
                 if ($user) {
                     $user->setHasPaid(true);
                     $this->entityManager->flush();
