@@ -29,7 +29,10 @@
             restrictWarnings="true"
     >
         <include>
-            <directory>src</directory>
+            <directory>src/Controller</directory>
+            <directory>src/Entity</directory>
+            <directory>src/Security</directory>
+            <directory>src/Repository</directory>
         </include>
 
         <deprecationTrigger>

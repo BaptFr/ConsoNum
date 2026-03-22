@@ -38,6 +38,7 @@
     "config": {
         "allow-plugins": {
             "php-http/discovery": true,
+            "phpstan/extension-installer": true,
             "symfony/flex": true,
             "symfony/runtime": true
         },
@@ -65,6 +66,7 @@
         "symfony/polyfill-php82": "*"
     },
     "scripts": {
+        "phpstan": "phpstan analyse src --level=5 --memory-limit=512M",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
@@ -87,6 +89,9 @@
     },
     "require-dev": {
         "dama/doctrine-test-bundle": "^8.6",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-symfony": "^2.0",
         "phpunit/phpunit": "^11.5.55",
         "symfony/browser-kit": "7.3.*",
         "symfony/css-selector": "7.3.*"
