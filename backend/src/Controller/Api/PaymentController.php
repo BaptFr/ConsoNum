@@ -70,6 +70,7 @@ class PaymentController extends AbstractController
 
                 if ($user) {
                     $user->setHasPaid(true);
+                    $this->entityManager->persist($user);
                     $this->entityManager->flush();
                     error_log('WEBHOOK has_paid set to true for user ' . $user->getId());
 
