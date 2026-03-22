@@ -52,7 +52,7 @@ export default function CalculatorPage() {
         //TODO refactor
         const checkAccessAndFetch = async () => {
             try {
-                const meRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/me`, {
+                const meRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/me`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 const meData = await meRes.json();
