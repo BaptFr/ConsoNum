@@ -25,6 +25,11 @@ security:
                 password_path: password
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
+        #webhook
+        webhook:
+            pattern: ^/api/payment/webhook
+            stateless: true
+            security: false
 
         # API firweel - all begins by /api.
         api:
@@ -38,6 +43,7 @@ security:
         - { path: ^/api/users/register, roles: PUBLIC_ACCESS }
         - { path: ^/api/users/verify, roles: PUBLIC_ACCESS }
         - { path: ^/api/data-request, roles: PUBLIC_ACCESS }
+        - { path: ^/api/payment/webhook, roles: PUBLIC_ACCESS }
 
         # path begins by /api need to be identified.
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
