@@ -62,7 +62,7 @@ export default function PaymentPage() {
         return;
     }
 
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/payment/intent`, {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/payment/intent`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
