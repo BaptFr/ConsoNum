@@ -60,17 +60,23 @@ class PaymentController extends AbstractController
         if ($event->type === 'payment_intent.succeeded') {
             $paymentIntent = $event->data->object;
             // @phpstan-ignore-next-line
-            $metadata = (array) $paymentIntent->metadata;
+            $userId = $paymentIntent->metadata->user_id ?? null;
 
-            if (isset($metadata['user_id'])) {
-                $user = $this->userRepository->find((int) $metadata['user_id']);
+            if ($userId) {
+                $user = $this->userRepository->find((int) $userId);
+                error_log('WEBHOOK user found: ' . ($user ? $user->getId() : 'null'));
+
                 if ($user) {
                     $user->setHasPaid(true);
+                    $this->entityManager->persist($user);
                     $this->entityManager->flush();
+                    error_log('WEBHOOK has_paid set to true for user ' . $user->getId());
+
                 }
+            }else {
+                error_log('WEBHOOK no user_id in metadata');
             }
         }
-
         return new Response('OK', Response::HTTP_OK);
     }
 }
