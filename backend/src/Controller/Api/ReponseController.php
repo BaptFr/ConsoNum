@@ -17,7 +17,7 @@ final class ReponseController extends AbstractController
     public function __construct(private EntityManagerInterface $em) {}
 
     #[Route('', name: 'create', methods: ['POST'])]
-    public function create(Request $request): JsonResponse
+    public function create(Request $request, ValidatorInterface $validator): JsonResponse
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $data = json_decode($request->getContent(), true);
@@ -39,7 +39,7 @@ final class ReponseController extends AbstractController
         // Verif data
         $valeur = isset($data['valeur']) ? (float)$data['valeur'] : null;
         $reponse->setValeur($valeur);
-        $reponse->setQuestion($question); // reponse liée avec question
+        $reponse->setQuestion($question); // response linked with question
 
         $errors = $validator->validate($reponse);
         if (count($errors) > 0) {

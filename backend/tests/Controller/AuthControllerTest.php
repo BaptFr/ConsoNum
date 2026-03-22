@@ -27,12 +27,13 @@ class AuthControllerTest extends WebTestCase
         $user->setPassword($passwordHasher->hashPassword($user, 'Password123!'));
         $user->setScore(0);
         $user->setCreatedAt(new \DateTime());
+        $user->setIsVerified(true);
         
         $em->persist($user);
         $em->flush();
 
         //Login test
-        $this->client->request('POST', '/auth/login', [], [], [
+        $this->client->request('POST', '/api/auth/login', [], [], [
             'CONTENT_TYPE' => 'application/json'
         ], json_encode([
             'email' => $email,
@@ -47,7 +48,7 @@ class AuthControllerTest extends WebTestCase
 
     public function testLoginWithInvalidCredentials(): void
     {
-        $this->client->request('POST', '/auth/login', [], [], [
+        $this->client->request('POST', '/api/auth/login', [], [], [
             'CONTENT_TYPE' => 'application/json'
         ], json_encode([
             'email' => 'wrong@email.com',
