@@ -68,6 +68,7 @@ services:
       dockerfile: Dockerfile.staging
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}
     container_name: consonum_frontend_staging
     restart: unless-stopped
     depends_on:
