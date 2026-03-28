@@ -40,7 +40,7 @@
 
 Dans ce contexte, nous souhaitons aider les utilisateurs à mieux comprendre et améliorer leurs pratiques numériques afin de les rendre plus sobres, plus responsables et moins énergivores.
 
-## 🎯 Le Projet
+##  Le Projet
 
 **ConsoNum** est une application web basée sur un questionnaire interactif.
 
@@ -50,20 +50,19 @@ Elle permet à l’utilisateur:
 - **Se situer** sur une échelle de sobriété numérique.
 - **Recevoir** des conseils adaptés au profil obtenu.
 
-## 📅 Équipe & Gestion de Projet
+##  Équipe & Gestion de Projet
 
-Ce projet a été mené en adoptant les rituels de la méthode **Agile**. La collaboration et le suivi des tâches ont été centralisés via un tableau Kanban sur GitHub Projects.
 
 *   **Initialisation** : Rédactions des spécifications fonctionnelles, conception maquettes FIGMA </br>
- ​📑​ **[Voir le Cahier des charges fonctionnel](https://docs.google.com/document/d/1FqdncZFrJc4dKPAVO5PX_jIP3C2GqPn4RVxFdIiZkOM/edit?usp=sharing)** ​📑​
+ ​​ **[Voir le Cahier des charges fonctionnel](https://docs.google.com/document/d/1FqdncZFrJc4dKPAVO5PX_jIP3C2GqPn4RVxFdIiZkOM/edit?usp=sharing)** ​📑​
 </br>
 
 *   **Suivi** : Gestion des tickets (To Do, In Progress, Review, Done) et suivi via compte rendu hebdomadaire  </br>
- ​📅  **[Voir  tableau Kanban](https://github.com/orgs/it-akademy-students/projects/31/views/1)**  ​📅
+ ​ **[Voir  tableau Kanban](https://github.com/orgs/it-akademy-students/projects/31/views/1)**  ​📅
 </br>
 
 *   **Versionning** : Respect des conventions et bonnes pratiques  (Nommages prefix de branches et commit, Pull Requests, Code Review).  </br>
- 🏷️​  **[Voir fichier CONTRIBUTING.md](https://github.com/it-akademy-students/T27-G1/blob/main/CONTRIBUTING.md)**  🏷️​
+ ​  **[Voir fichier CONTRIBUTING.md](https://github.com/it-akademy-students/T27-G1/blob/main/CONTRIBUTING.md)**  🏷️​
 
 </br>
 
@@ -71,7 +70,7 @@ Ce projet a été mené en adoptant les rituels de la méthode **Agile**. La col
 
 Le projet repose sur une architecture moderne séparant le Backend (API) du Frontend (SPA).
 
-### 🧱 Backend (API REST)
+### Backend (API REST)
 L'API est le cœur logique de l'application.
 *   **Langage** : PHP 8.2
 *   **Framework** : **Symfony 6/7** (Structure robuste et modulaire).
@@ -79,7 +78,7 @@ L'API est le cœur logique de l'application.
 *   **ORM** : **Doctrine** pour l'abstraction de la base de données et la gestion des Entités.
 *   **Validation** : `Symfony Validator` pour assurer l'intégrité des données reçues.
 
-### 🎨 Frontend (Interface)
+###  Frontend (Interface)
 L'interface utilisateur est construite pour être réactive et performante.
 *   **Librairie** : **ReactJS 19** (React).
 *   **Framework** : **Next.js 14**.
@@ -87,12 +86,12 @@ L'interface utilisateur est construite pour être réactive et performante.
 *   **Styling** : TailwindCSS + @heroui/react.
 *   **Communication** : Fetch API / Axios pour consommer l'API Symfony.
 
-### 💾 Base de Données & Outils
+###  Base de Données & Outils
 *   **SGBD** : **MariaDB**.
 *   **Gestion SQL** : DBeaver (pour la modélisation et la vérification des données).
 *   **Test API** : Postman (Tests d'intégration).
 
-### 🐳 DevOps & Infrastructure
+###  DevOps & Infrastructure
 *   **Conteneurisation** : **Docker** & **Docker Compose**.
     *   Conteneur `php` (FPM)
     *   Conteneur `nginx` (Serveur Web)
@@ -100,7 +99,7 @@ L'interface utilisateur est construite pour être réactive et performante.
 </br>
 
 
-## 📐 Architecture & Concepts
+##  Architecture & Concepts
 
 Le projet suit une architecture **Headless** (Frontend et Backend découplés pour un travail d'quipe, une évolution possible sur une appli mobile) et respecte le pattern **MVC (Modèle-Vue-Contrôleur)**.
 
@@ -119,6 +118,3 @@ En mode API, la "Vue" est la représentation JSON des données.
 </br>
 
 
-## 📁 Structure du Projet
-
-```
