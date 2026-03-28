@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import Link from 'next/link';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
@@ -13,11 +14,16 @@ function CheckoutForm() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+    const [acceptCGV, setAcceptCGV] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!stripe || !elements) return;
 
+    if (!acceptCGV) {
+      setError('Vous devez accepter les Conditions Générales de Vente.');
+      return;
+    }
     setLoading(true);
     setError(null);
 
@@ -37,6 +43,33 @@ function CheckoutForm() {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <PaymentElement />
+      <div className="flex items-start gap-3 mt-4">
+        <input 
+          type="checkbox" 
+          id="acceptCGV" 
+          checked={acceptCGV}
+          onChange={(e) => setAcceptCGV(e.target.checked)}
+          className="mt-1 h-4 w-4"
+        />
+        <label htmlFor="acceptCGV" className="text-sm text-gray-300">
+          J&apos;accepte les{" "}
+          <Link 
+            href="/legal/cgv" 
+            target="_blank" 
+            className="underline text-green-400 hover:text-green-300"
+          >
+            Conditions Générales de Vente
+          </Link>
+          {" "}et la{" "}
+          <Link 
+            href="/legal/privacy-policy" 
+            target="_blank" 
+            className="underline text-green-400 hover:text-green-300"
+          >
+            Politique de confidentialité
+          </Link>
+        </label>
+      </div>
       {error && <p className="text-red-500 text-sm">{error}</p>}
       <button
         type="submit"

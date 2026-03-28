@@ -8,7 +8,7 @@ export default function Home() {
      <div className="relative min-h-screen w-full overflow-hidden">
       <div className="absolute inset-0 z-0">
         <Image
-          src="/images/background-2.webp"
+          src="/images/background-3.webp"
           alt="Nature et technologie"
           fill
           className="object-cover brightness-50"

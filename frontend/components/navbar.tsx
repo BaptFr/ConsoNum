@@ -16,7 +16,8 @@ export const Navbar = () => {
 
 
   return (
-    <HeroNavbar maxWidth="xl" position="sticky" className="w-full p-5 bg-green-500/5">
+    <HeroNavbar maxWidth="xl" position="sticky" className="w-full p-5 bg-green-500/2">
+      
       <NavbarBrand>
         <NextLink href="/" className="font-bold text-inherit">
           CONSONUM
