@@ -59,7 +59,6 @@ class PaymentController extends AbstractController
 
         if ($event->type === 'payment_intent.succeeded') {
             $paymentIntent = $event->data->object;
-            // @phpstan-ignore-next-line
             $userId = $paymentIntent->metadata->user_id ?? null;
 
             if ($userId) {

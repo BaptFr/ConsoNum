@@ -58,12 +58,13 @@ export const LoginForm = () => {
         label="Email"
         isRequired
         placeholder="votre@email.com"
-        labelPlacement="outside"
+        labelPlacement="outside-top"
         radius="sm"
         value={email}
         onValueChange={setEmail}
         classNames={{
           inputWrapper: "bg-transparent bg-default  p-2 rounded-md ",
+          label: "text-black"
         }}
       />
 
@@ -72,12 +73,13 @@ export const LoginForm = () => {
         isRequired
         label="Mot de passe"
         placeholder="*********"
-        labelPlacement="outside"
+        labelPlacement="outside-top"
         radius="md"
         value={password}
         onValueChange={setPassword}
         classNames={{
           inputWrapper: "bg-transparent bg-default p-2 rounded-md",
+          label: "text-black"
         }}
       />
 

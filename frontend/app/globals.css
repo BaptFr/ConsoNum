@@ -9,6 +9,16 @@
   --gray-primary:  #0D2027;
 }
 
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+#__next {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
 
 .background-primary {
   background-color: var(--green-primary);

@@ -2,7 +2,6 @@ User-agent: *
 
 # Allowed public pages
 Allow: /
-Allow: /privacy-policy
 
 # Private pages
 Disallow: /dashboard
@@ -24,6 +23,9 @@ Disallow: /calculator
 # Tech files
 Disallow: /_next/
 Disallow: /static/
+
+# Infos pages
+Disallow: /privacy-policy
 
 # Sitemap
 Sitemap: https://consonum.fr/sitemap.xml
