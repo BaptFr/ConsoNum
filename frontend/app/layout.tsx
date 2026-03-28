@@ -4,6 +4,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/features/navigation/footer";
+
 import CookieBanner from "@/components/ui/CookieBanner";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -31,8 +33,13 @@ export default function RootLayout({
     <html lang="fr" className="dark">
       <body className={inter.className}>
         <Providers>
-          <Navbar />
-          {children}
+          <div className="flex flex-col">
+            <Navbar />
+              <main className="flex-1">
+              {children}
+              </main>
+            <Footer />
+          </div>
           <CookieBanner/>
         </Providers>
       </body>

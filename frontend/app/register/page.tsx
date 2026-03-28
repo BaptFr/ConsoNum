@@ -64,7 +64,7 @@ export default function RegisterPage() {
         <CardHeader className="flex flex-col items-center gap-4">
           <h1 className="text-2xl font-bold border-b">Créer un compte</h1>
           <p className="text-default-500 text-sm text-center">
-            Rejoignez ConsoNum et mesurez votre empreinte numérique
+            Rejoignez ConsoNum et mesurez votre empreinte numérique. 5 minutes de votre temps pour améliorer des habitudes ayant un impact sur la vie.
           </p>
         </CardHeader>
 
