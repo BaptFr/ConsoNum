@@ -1,0 +1,29 @@
+User-agent: *
+
+# Allowed public pages
+Allow: /
+Allow: /privacy-policy
+
+# Private pages
+Disallow: /dashboard
+Disallow: /profile
+Disallow: /history
+Disallow: /login
+Disallow: /register
+Disallow: /verify
+
+# API  and backend
+Disallow: /api/
+
+# Payment
+Disallow: /payment
+
+# Calculator
+Disallow: /calculator
+
+# Tech files
+Disallow: /_next/
+Disallow: /static/
+
+# Sitemap
+Sitemap: https://consonum.fr/sitemap.xml
