@@ -1,6 +1,9 @@
 "use client";
 
+import { Metadata } from "next";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+
 import {
     Card,
     CardBody,
@@ -10,11 +13,10 @@ import {
     Radio,
     Spinner,
 } from "@heroui/react";
-import { useRouter } from "next/navigation";
+
 import { getToken } from "@/lib/auth";
-
 import { calculateScore } from '@/lib/utils/scoreCalculator'
-
+import Head from "next/head";
 
 interface Reponse {
     id: number;
@@ -145,75 +147,87 @@ export default function CalculatorPage() {
 
     if (result) {
         return (
-            <div className="container mx-auto p-4 max-w-2xl">
-                <Card>
-                    <CardHeader>
-                        <h1 className="text-3xl font-bold text-center w-full">
-                            Votre Résultat
-                        </h1>
-                    </CardHeader>
-                    <CardBody className="text-center space-y-4">
-                        <p className="text-6xl font-bold">{result.score}/30</p>
-                        <p className="text-2xl font-semibold">{result.profil}</p>
-                        <p className="text-lg text-default-600">{result.message}</p>
-                        <div className="flex gap-4 justify-center mt-6">
-                            <Button color="primary" onPress={() => router.push("/history")}>
-                                Voir mon historique
-                            </Button>
-                            <Button variant="flat" onPress={() => window.location.reload()}>
-                                Refaire le test
-                            </Button>
-                        </div>
-                    </CardBody>
-                </Card>
-            </div>
+            <>
+            <Head>
+                <title>Questionnaire - ConsoNum</title>
+                <meta name="description" content="Évaluez votre empreinte numérique" />
+            </Head>
+                <div className="container mx-auto p-4 max-w-2xl">
+                    <Card>
+                        <CardHeader>
+                            <h1 className="text-3xl font-bold text-center w-full">
+                                Votre Résultat
+                            </h1>
+                        </CardHeader>
+                        <CardBody className="text-center space-y-4">
+                            <p className="text-6xl font-bold">{result.score}/30</p>
+                            <p className="text-2xl font-semibold">{result.profil}</p>
+                            <p className="text-lg text-default-600">{result.message}</p>
+                            <div className="flex gap-4 justify-center mt-6">
+                                <Button color="primary" onPress={() => router.push("/history")}>
+                                    Voir mon historique
+                                </Button>
+                                <Button variant="flat" onPress={() => window.location.reload()}>
+                                    Refaire le test
+                                </Button>
+                            </div>
+                        </CardBody>
+                    </Card>
+                </div>
+            </>
         );
     }
 
     return (
-        <div className="container mx-auto p-4 max-w-3xl">
-            <Card>
-                <CardHeader>
-                    <h1 className="text-2xl font-bold">
-                        Calculateur d&apos;Empreinte Numérique
-                    </h1>
-                </CardHeader>
-                <CardBody className="space-y-6">
-                    {questions.map((question) => (
-                        <Card key={question.id} shadow="sm">
-                            <CardBody>
-                                <p className="font-semibold mb-2 text-small text-default-500">
-                                    {question.categorie}
-                                </p>
-                                <p className="font-medium mb-4">{question.texte}</p>
-                                <RadioGroup
-                                    value={answers[question.id]?.toString()}
-                                    onValueChange={(val) =>
-                                        handleAnswerChange(question.id, parseInt(val))
-                                    }
-                                >
-                                    {question.reponses.map((reponse) => (
-                                        <Radio key={reponse.id} value={reponse.valeur.toString()} data-testid={`reponse-${reponse.id}`}>
-                                            {reponse.texte}
-                                        </Radio>
-                                    ))}
-                                </RadioGroup>
-                            </CardBody>
-                        </Card>
-                    ))}
+        <>
+            <Head>
+                <title>Questionnaire - ConsoNum</title>
+                <meta name="description" content="Évaluez votre empreinte numérique" />
+            </Head>
+            <div className="container mx-auto p-4 max-w-3xl">
+                <Card>
+                    <CardHeader>
+                        <h1 className="text-2xl font-bold">
+                            Calculateur d&apos;Empreinte Numérique
+                        </h1>
+                    </CardHeader>
+                    <CardBody className="space-y-6">
+                        {questions.map((question) => (
+                            <Card key={question.id} shadow="sm">
+                                <CardBody>
+                                    <p className="font-semibold mb-2 text-small text-default-500">
+                                        {question.categorie}
+                                    </p>
+                                    <p className="font-medium mb-4">{question.texte}</p>
+                                    <RadioGroup
+                                        value={answers[question.id]?.toString()}
+                                        onValueChange={(val) =>
+                                            handleAnswerChange(question.id, parseInt(val))
+                                        }
+                                    >
+                                        {question.reponses.map((reponse) => (
+                                            <Radio key={reponse.id} value={reponse.valeur.toString()} data-testid={`reponse-${reponse.id}`}>
+                                                {reponse.texte}
+                                            </Radio>
+                                        ))}
+                                    </RadioGroup>
+                                </CardBody>
+                            </Card>
+                        ))}
 
-                    <Button
-                        color="primary"
-                        size="lg"
-                        className="w-full"
-                        onPress={handleSubmit}
-                        isLoading={submitting}
-                        isDisabled={Object.keys(answers).length < questions.length}
-                    >
-                        Calculer mon score
-                    </Button>
-                </CardBody>
-            </Card>
-        </div>
+                        <Button
+                            color="primary"
+                            size="lg"
+                            className="w-full"
+                            onPress={handleSubmit}
+                            isLoading={submitting}
+                            isDisabled={Object.keys(answers).length < questions.length}
+                        >
+                            Calculer mon score
+                        </Button>
+                    </CardBody>
+                </Card>
+            </div>
+        </>
     );
 }

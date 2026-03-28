@@ -5,7 +5,7 @@ on:
     branches-ignore: [ main, develop ]
 
   pull_request:
-    branches: [ develop ]
+    branches: [ main, develop ]
 
 
 jobs:
@@ -132,7 +132,7 @@ jobs:
         
   deploy-staging:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop'
+    if: github.event_name == 'pull_request' && github.base_ref == 'develop' 
     steps:
     - name: Deploy to Staging
       uses: appleboy/ssh-action@v1.0.0
@@ -145,9 +145,11 @@ jobs:
           git pull origin develop
           docker-compose --env-file .env.staging -f docker-compose.staging.yml down
           docker-compose --env-file .env.staging -f docker-compose.staging.yml up -d --build
+          docker compose -f docker-compose.staging.yml restart nginx
+          
   deploy-production:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
     - name: Deploy to Production
       uses: appleboy/ssh-action@v1.0.0
@@ -161,6 +163,7 @@ jobs:
         script: |
           cd /var/www/EcoNum
           git pull origin main
-          docker compose -f docker-compose.prod.yml down
-          docker compose -f docker-compose.prod.yml build
-          docker compose -f docker-compose.prod.yml up -d
+          docker compose -f docker-compose.prod.yml --env-file .env.prod down
+          docker compose -f docker-compose.prod.yml --env-file .env.prod build
+          docker compose -f docker-compose.prod.yml --env-file .env.prod up -d
+          docker compose -f docker-compose.prod.yml restart nginx
