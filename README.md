@@ -10,6 +10,7 @@
 <br>
 *L'application d'évaluation de l'empreinte numérique responsable.*
 
+
 <p>
   <a href="#-le-projet">Le Projet</a> •
   <a href="#-équipe--gestion-de-projet">Équipe & Kanban</a> •
@@ -35,34 +36,42 @@
 
 ---
 
+## 🌐 Accès à l'application
+
+- **Production** : [https://consonum.fr](https://consonum.fr)
+
+  ---
+
 **Le numérique représente aujourd’hui 4 % des émissions mondiales de gaz à effet de serre**, et ce chiffre pourrait doubler d’ici 2025. La notion de sobriété numérique est devenue centrale face aux enjeux climatiques : Green IT, éco-conception, labels “informatique verte” ou encore nouvelles obligations pour encourager des usages numériques plus responsables.
 
 
 Dans ce contexte, nous souhaitons aider les utilisateurs à mieux comprendre et améliorer leurs pratiques numériques afin de les rendre plus sobres, plus responsables et moins énergivores.
 
-##  Le Projet
+## 🌳 Le Projet
 
 **ConsoNum** est une application web basée sur un questionnaire interactif.
 
 Elle permet à l’utilisateur:
--  **D'évaluer** ses habitudes numériques grâce à un score calculé à partir des réponses.
-- **D' identifier** les pratiques énergivores ou peu responsables en repérant les questions avec un faible score.
-- **Se situer** sur une échelle de sobriété numérique.
-- **Recevoir** des conseils adaptés au profil obtenu.
-
-##  Équipe & Gestion de Projet
+- **Inscription sécurisée** avec confirmation par email
+- **Accès payant** au questionnaire (1,99 € via Stripe)
+- **Évaluation personnalisée** avec score de sobriété numérique
+- **Historique** des résultats
+- **Authentification JWT** sécurisée
+- **Gestion RGPD** (demande d'accès et suppression des données)
+- 
+##   📅 Équipe & Gestion de Projet
 
 
 *   **Initialisation** : Rédactions des spécifications fonctionnelles, conception maquettes FIGMA </br>
- ​​ **[Voir le Cahier des charges fonctionnel](https://docs.google.com/document/d/1FqdncZFrJc4dKPAVO5PX_jIP3C2GqPn4RVxFdIiZkOM/edit?usp=sharing)** ​📑​
+ ​​ **[Voir le Cahier des charges fonctionnel](https://docs.google.com/document/d/1FqdncZFrJc4dKPAVO5PX_jIP3C2GqPn4RVxFdIiZkOM/edit?usp=sharing)** ​​
 </br>
 
 *   **Suivi** : Gestion des tickets (To Do, In Progress, Review, Done) et suivi via compte rendu hebdomadaire  </br>
- ​ **[Voir  tableau Kanban](https://github.com/orgs/it-akademy-students/projects/31/views/1)**  ​📅
+ ​ **[Voir  tableau Kanban](https://github.com/orgs/it-akademy-students/projects/31/views/1)**  ​
 </br>
 
 *   **Versionning** : Respect des conventions et bonnes pratiques  (Nommages prefix de branches et commit, Pull Requests, Code Review).  </br>
- ​  **[Voir fichier CONTRIBUTING.md](https://github.com/it-akademy-students/T27-G1/blob/main/CONTRIBUTING.md)**  🏷️​
+ ​  **[Voir fichier CONTRIBUTING.md](https://github.com/it-akademy-students/T27-G1/blob/main/CONTRIBUTING.md)**  ​
 
 </br>
 
@@ -73,7 +82,7 @@ Le projet repose sur une architecture moderne séparant le Backend (API) du Fron
 ### Backend (API REST)
 L'API est le cœur logique de l'application.
 *   **Langage** : PHP 8.2
-*   **Framework** : **Symfony 6/7** (Structure robuste et modulaire).
+*   **Framework** : **Symfony 7.3** (Structure robuste et modulaire).
 *   **Sécurité** : `LexikJWTAuthenticationBundle` pour une authentification sans état (Stateless) via Tokens JWT.
 *   **ORM** : **Doctrine** pour l'abstraction de la base de données et la gestion des Entités.
 *   **Validation** : `Symfony Validator` pour assurer l'intégrité des données reçues.
@@ -81,7 +90,7 @@ L'API est le cœur logique de l'application.
 ###  Frontend (Interface)
 L'interface utilisateur est construite pour être réactive et performante.
 *   **Librairie** : **ReactJS 19** (React).
-*   **Framework** : **Next.js 14**.
+*   **Framework** : **Next.js 16**.
 *   **Langage** : **Typescript**.
 *   **Styling** : TailwindCSS + @heroui/react.
 *   **Communication** : Fetch API / Axios pour consommer l'API Symfony.
@@ -96,8 +105,19 @@ L'interface utilisateur est construite pour être réactive et performante.
     *   Conteneur `php` (FPM)
     *   Conteneur `nginx` (Serveur Web)
     *   Conteneur `mariadb` (Base de données)
+    *   Conteneur Next.js (Frontend)
+
 </br>
 
+### 🔌Services externes
+
+- **Paiement** : Stripe
+- **Emails** : Brevo API (confirmations d'inscription, notifications)
+- **Hébergement** : DigitalOcean (serveurs dédiés)
+- **DNS** : OVH
+- **Réception emails** : ImprovMX (redirection contact@consonum.fr)
+
+</br>
 
 ##  Architecture & Concepts
 
@@ -111,10 +131,36 @@ Les contrôleurs Symfony interceptent les requêtes HTTP, appliquent la logique 
 *   *Sécurité* : Utilisation des attributs PHP `#[IsGranted('ROLE_ADMIN')]` directement sur les routes.
 *   *Services* : Injection de dépendances (Dependency Injection) pour accéder à l'`EntityManager` ou au `PasswordHasher`.
 
-### 3. La Vue (Serialization)
-En mode API, la "Vue" est la représentation JSON des données.
-*   Utilisation du **Serializer Symfony** avec des **Groupes de sérialisation** (`groups=['question:read']`) pour filtrer précisément les données exposées et éviter les boucles infinies ou les fuites de données sensibles.
-
 </br>
 
+---
+
+## 🚀 Déploiement
+
+### Environnements
+
+- **Staging** : https://staging.consonum.fr (branche `develop`)
+- **Production** : https://consonum.fr (branche `main`)
+
+### CI/CD
+
+Workflow GitHub Actions pour le déploiement automatique :
+- Tests automatisés (frontend + backend)
+- Déploiement staging sur PR vers develop
+- Déploiement production sur push vers main
+
+---
+
+## Pages légales
+
+- Conditions Générales de Vente (CGV)
+- Conditions Générales d'Utilisation (CGU)
+- Mentions Légales
+- Politique de Confidentialité (RGPD)
+
+---
+
+## Contact
+
+Pour toute question : contact@consonum.fr
 
