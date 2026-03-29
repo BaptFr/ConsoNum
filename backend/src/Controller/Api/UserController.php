@@ -79,7 +79,7 @@ class UserController extends AbstractController
         $verificationUrl = $_ENV['FRONTEND_URL'] . '/verify?token=' . $user->getVerificationToken();
 
         $email = (new Email())
-            ->from('a674fe001@smtp-brevo.com')
+            ->from('noreply@consonum.fr')
             ->to($user->getEmail())
             ->subject('Confirmez votre adresse email - ConsoNum')
             ->html('<p>Bonjour,</p><p>Cliquez sur ce lien pour confirmer votre inscription :</p><p><a href="' . $verificationUrl . '">' . $verificationUrl . '</a></p>');
