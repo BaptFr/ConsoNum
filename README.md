@@ -35,12 +35,20 @@
 </div>
 
 ---
+<div align="center">
+  
+### 🌐 Accès à l'application 
 
-## 🌐 Accès à l'application
+</br>
 
-- **Production** : [https://consonum.fr](https://consonum.fr)
+​​ **Production disponible :** 
 
-  ---
+## 👉 [https://consonum.fr](https://consonum.fr)  👈
+
+</br>
+
+</div>
+
 
 **Le numérique représente aujourd’hui 4 % des émissions mondiales de gaz à effet de serre**, et ce chiffre pourrait doubler d’ici 2025. La notion de sobriété numérique est devenue centrale face aux enjeux climatiques : Green IT, éco-conception, labels “informatique verte” ou encore nouvelles obligations pour encourager des usages numériques plus responsables.
 
@@ -109,7 +117,7 @@ L'interface utilisateur est construite pour être réactive et performante.
 
 </br>
 
-### 🔌Services externes
+### Services externes
 
 - **Paiement** : Stripe
 - **Emails** : Brevo API (confirmations d'inscription, notifications)
@@ -119,7 +127,7 @@ L'interface utilisateur est construite pour être réactive et performante.
 
 </br>
 
-##  Architecture & Concepts
+## 📐  Architecture & Concepts
 
 Le projet suit une architecture **Headless** (Frontend et Backend découplés pour un travail d'quipe, une évolution possible sur une appli mobile) et respecte le pattern **MVC (Modèle-Vue-Contrôleur)**.
 
@@ -142,7 +150,7 @@ Les contrôleurs Symfony interceptent les requêtes HTTP, appliquent la logique 
 - **Staging** : https://staging.consonum.fr (branche `develop`)
 - **Production** : https://consonum.fr (branche `main`)
 
-### CI/CD
+### ​🔩​ CI/CD
 
 Workflow GitHub Actions pour le déploiement automatique :
 - Tests automatisés (frontend + backend)
@@ -151,7 +159,7 @@ Workflow GitHub Actions pour le déploiement automatique :
 
 ---
 
-## Pages légales
+## 📚​  Pages légales
 
 - Conditions Générales de Vente (CGV)
 - Conditions Générales d'Utilisation (CGU)
@@ -160,7 +168,7 @@ Workflow GitHub Actions pour le déploiement automatique :
 
 ---
 
-## Contact
+## 📧​ Contact
 
 Pour toute question : contact@consonum.fr
 
