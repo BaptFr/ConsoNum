@@ -41,8 +41,8 @@ if (!in_array($type, ['access', 'deletion'])) {
 $typeLabel = $type === 'deletion' ? 'Suppression de compte' : 'Accès aux données';
 
         $email = (new Email())
-            ->from('noreply@consonum.fr')
-            ->to('admin@consonum.fr')
+            ->from('a674fe001@smtp-brevo.com')
+            ->to('contact@consonum.fr')
             ->subject('Demande RGPD : ' . $type)
             ->html(
                 '<p><strong>Type de demande :</strong> ' . $typeLabel . '</p>' .
