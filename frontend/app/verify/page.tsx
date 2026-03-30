@@ -68,7 +68,7 @@ function VerifyContent() {
 
 export default function VerifyPage() {
   return (
-    <Suspense fallback={<div className="flex justify-center items-center min-h-[80vh]"><p>Chargement...</p></div>}>
+    <Suspense fallback={<div className="min-h-screen  flex justify-center items-center"><p>Chargement...</p></div>}>
       <VerifyContent />
     </Suspense>
   );
