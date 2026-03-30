@@ -105,10 +105,10 @@ export default function PaymentPage() {
         .then((res) => res.json())
         .then((data) => setClientSecret(data.clientSecret));
 }, [router]);
-  if (!clientSecret) return <p className="p-8">Chargement...</p>;
+  if (!clientSecret) return <p className="min-h-screen p-8">Chargement du formulaire de paiement...</p>;
 
   return (
-    <div className="max-w-md mx-auto mt-16 p-8 border rounded-xl shadow">
+    <div className="max-w-md mx-auto my-16 p-8 border rounded-xl shadow">
       <h1 className="text-xl font-semibold mb-6">Accéder au questionnaire</h1>
       <p className="text-sm text-gray-600 mb-6">
         Un accès unique à 1,99 € pour évaluer vos habitudes numériques.

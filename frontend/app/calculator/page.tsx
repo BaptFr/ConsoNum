@@ -138,8 +138,9 @@ export default function CalculatorPage() {
 
     if (loading) {
         return (
-            <div className="flex justify-center items-center min-h-[80vh]">
-                <Spinner size="lg" />
+            <div className="min-h-screen flex justify-center items-center gap-2">
+                <div className="animate-spin rounded-full h-8 w-8 border-4 border-gray-300 border-t-primary"></div>
+                <span className="text-sm text-white">Vérification du statut du profil...</span>
             </div>
         );
     }
@@ -151,7 +152,7 @@ export default function CalculatorPage() {
                 <title>Questionnaire - ConsoNum</title>
                 <meta name="description" content="Évaluez votre empreinte numérique" />
             </Head>
-                <div className="container mx-auto p-4 max-w-2xl">
+                <div className="min-h-100vh container mx-auto p-4 max-w-2xl">
                     <Card>
                         <CardHeader>
                             <h1 className="text-3xl font-bold text-center w-full">

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import NextLink from "next/link";
 import { useRouter } from "next/navigation";
-import { Input, Button, Link } from "@heroui/react";
+import { Input, Button, Link, Spinner } from "@heroui/react";
 import { useAuth } from "@/contexts/AuthContext";
 
 
@@ -92,12 +92,18 @@ export const LoginForm = () => {
       {error && (
         <p className="text-danger text-sm text-center">{error}</p>
       )}
+     {isLoading && (
+      <div className="flex justify-center items-center gap-2">
+        <div className="animate-spin rounded-full h-8 w-8 border-4 border-gray-300 border-t-primary"></div>
+        <span className="text-sm text-black">Connexion en cours...</span>
+      </div>
+    )}
 
       <Button
         type="submit"
         color="primary"
-        isLoading={isLoading}
-        className="w-full font-semibold mt-2 text-gray-700 hover:text-gray-900 text-lg"
+        isDisabled={isLoading}
+        className="w-full h-10 font-semibold mt-2 text-gray-700 hover:text-gray-900 text-lg"
         radius="sm"
       >
         Se connecter

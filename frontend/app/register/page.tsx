@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import { Input, Button, Card, CardBody, CardHeader,  Form } from "@heroui/react";
+import { Input, Button, Card, CardBody, CardHeader,  Form, Spinner } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -69,7 +69,7 @@ export default function RegisterPage() {
         </CardHeader>
 
         <CardBody>
-          <Form onSubmit={handleSubmit} className="flex flex-col gap-6" >
+          <Form onSubmit={handleSubmit} className="flex flex-col  gap-6" >
             <Input
                 size="md"
                 label="Email"
@@ -134,16 +134,23 @@ export default function RegisterPage() {
               <p className="text-danger text-sm text-center">{error}</p>
             )}
 
+            {isLoading && (
+            <div className="flex justify-center  self-center items-center gap-2">
+              <div className="animate-spin rounded-full h-8 w-8 border-4 border-gray-300 border-t-primary"></div>
+              <span className="text-sm text-white">Inscription en cours...</span>
+            </div>
+            )}
+
             <Button
                 type="submit"
                 color="primary"
-                isLoading={isLoading}
-                className="p-3 border-2 border-gray-500 rounded-2xl bg-white/20 hover:bg-white/70 hover:text-black text-xl font-bold"
+                isDisabled={isLoading}
+                className="p-3 border-2 flex items-center self-center border-gray-500 rounded-2xl bg-white/20 hover:bg-white/70 hover:text-black text-xl font-bold"
             >
               S&apos;inscrire
             </Button>
 
-            <div className="flex justify-center gap-2 items-center ">
+            <div className="flex justify-center self-center gap-2 items-center ">
                 <p className="text-center text-sm ">
                     Déjà un compte ?{" "}
                 </p>
